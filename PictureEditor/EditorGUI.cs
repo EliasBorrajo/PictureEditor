@@ -9,12 +9,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PresentationLayer.ImageProcessing;
-using PresentationLayer.ImageProcessing.EdgeDetector;
+using PictureEditor.ImageProcessing;
+using PictureEditor.ImageProcessing.EdgeDetector;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
-namespace PresentationLayer
+namespace PictureEditor
 {
     /// <summary>
     ///  Controller for the Picture Editor Program GUI 
@@ -24,6 +24,7 @@ namespace PresentationLayer
         // A T T R I B U T E S
         private Bitmap currentBitmap;       // Bitmap currently being displayed in the picture box
         private Image originalImage;         // Original image loaded into the picture box (used for resetting)
+        private bool edgeDetectionApplied;   // Whether the edge detection has been applied to the image. Can only be applied once.
 
         // C  O N S T R U C T O R
         public EditorGUI()
@@ -44,11 +45,11 @@ namespace PresentationLayer
             SetPictureBoxImage(originalImage);
 
             // 2) Disable the Edge Detection group box (until the filters have been applied)
-            groupBoxEdgesDetection.Enabled = false;
+            //groupBoxEdgesDetection.Enabled = false;
+            edgeDetectionApplied = false;
 
             // 3) Populate the filters list boxes with the available filters
             PopulateFiltersListBoxes();
-
         }
 
         #region initialisation
@@ -104,17 +105,6 @@ namespace PresentationLayer
 
         #region GroupBox_Filters
 
-        /// <summary>
-        /// Apply the Hell filter to the image and display the result in the picture box.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnFilterHell_Click(object sender, EventArgs e)
-        {
-            // new Bitmap(pictureBox.Image) creates a copy of the image in the picture box
-            pictureBox.Image = ImageFilters.ApplyFilter(new Bitmap(pictureBox.Image), 1, 1, 10, 15);
-            groupBoxEdgesDetection.Enabled = true;
-        }
 
         /// <summary>
         /// Apply the Black and White filter to the image and display the result in the picture box.
@@ -123,8 +113,23 @@ namespace PresentationLayer
         /// <param name="e"></param>
         private void btnFilterBlackWhite_Click(object sender, EventArgs e)
         {
-            pictureBox.Image = ImageFilters.BlackWhite(new Bitmap(pictureBox.Image));
-            groupBoxEdgesDetection.Enabled = true;
+            // new Bitmap(pictureBox.Image) creates a copy of the image in the picture box
+            currentBitmap = ImageFilters.BlackWhite(new Bitmap(pictureBox.Image));
+            pictureBox.Image = currentBitmap;
+        }
+
+        private void btnFilterSwap_Click(object sender, EventArgs e)
+        {
+            // new Bitmap(pictureBox.Image) creates a copy of the image in the picture box
+            currentBitmap = ImageFilters.DivideCrop(new Bitmap(pictureBox.Image));
+            pictureBox.Image = currentBitmap;
+        }
+
+        private void btnFilterMagic_Click(object sender, EventArgs e)
+        {
+            // new Bitmap(pictureBox.Image) creates a copy of the image in the picture box
+            currentBitmap = ImageFilters.ApplyFilter(new Bitmap(pictureBox.Image), 1, 1, 10, 15);
+            pictureBox.Image = currentBitmap;
         }
 
 
@@ -137,10 +142,16 @@ namespace PresentationLayer
         /// <param name="e"></param>
         private void btnApplyEdgeDetector_Click(object sender, EventArgs e)
         {
-            bool filtersApplied = false; // To track whether filters have been applied
+            //bool filtersApplied = false; // To track whether filters have been applied
+            if(edgeDetectionApplied)
+            {
+                MessageBox.Show("Edge detection has already been applied to this image.");
+                return;
+            }
 
             // Check that an image has been loaded 
-            if (currentBitmap == null)
+            if (pictureBox.Image == null ||
+                currentBitmap == null)
             {
                 MessageBox.Show("You must load an image");
                 return;
@@ -170,33 +181,29 @@ namespace PresentationLayer
                 // Verify the checkbox value, and apply the filter accordingly (X, Y or the same)
                 if (checkBox_SameXY.Checked)
                 {
-                    currentBitmap = EdgeDetectorAlgorithm.ApplyEdgeDetector( currentBitmap, 
-                                                                                                                        xFilterMatrix, 
+                    currentBitmap = EdgeDetectorAlgorithm.ApplyEdgeDetector(currentBitmap,
+                                                                                                                        xFilterMatrix,
                                                                                                                         xFilterMatrix,
                                                                                                                         threshold);
                 }
                 else
                 {
-                    currentBitmap = EdgeDetectorAlgorithm.ApplyEdgeDetector( currentBitmap,
+                    currentBitmap = EdgeDetectorAlgorithm.ApplyEdgeDetector(currentBitmap,
                                                                                                                         xFilterMatrix,
                                                                                                                         yFilterMatrix,
                                                                                                                         threshold);
                 }
 
-                filtersApplied = true;
+                //filtersApplied = true;
+                edgeDetectionApplied = true;
             }
 
-            // If filters have been applied, enable the groupBoxEdgesDetection;
-            // otherwise, show an error message
-            if (filtersApplied)
-            {
-                groupBoxEdgesDetection.Enabled = true;
-                pictureBox.Image = currentBitmap; // Display the filtered image in the picture box
-            }
-            else
-            {
-                MessageBox.Show("The image must be filtered first, or both X and Y filters must be selected.");
-            }
+            Console.WriteLine("TEST1");
+           // Console.WriteLine("TEST IMG" + pictureBox.ToString);
+            pictureBox.Image = currentBitmap; // Display the filtered image in the picture box
+            edgeDetectionApplied = true;
+            Console.WriteLine("TEST2");
+            //Console.WriteLine("TEST IMG" + pictureBox.ToString);
         }
 
         /// <summary>
@@ -227,13 +234,9 @@ namespace PresentationLayer
         private void btnCancelFilters_MouseClick(object sender, MouseEventArgs e)
         {
             pictureBox.Image = originalImage;
-            groupBoxEdgesDetection.Enabled = false;
+            edgeDetectionApplied = false;
+            //groupBoxEdgesDetection.Enabled = false;
         }
-
-
-       
-
-
 
 
     }

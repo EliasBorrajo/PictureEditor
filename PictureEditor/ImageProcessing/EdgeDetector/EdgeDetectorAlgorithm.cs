@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PresentationLayer.ImageProcessing.EdgeDetector
+namespace PictureEditor.ImageProcessing.EdgeDetector
 {
     public static class EdgeDetectorAlgorithm
     {

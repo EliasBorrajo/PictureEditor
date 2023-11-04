@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using PresentationLayer;
-using PresentationLayer.ImageProcessing;
-using PresentationLayer.ImageProcessing.EdgeDetector;
+using PictureEditor;
+using PictureEditor.ImageProcessing;
+using PictureEditor.ImageProcessing.EdgeDetector;
 
 namespace PictureEditor_Test
 {

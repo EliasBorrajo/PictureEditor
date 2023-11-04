@@ -1,8 +1,8 @@
 using Microsoft.VisualBasic.ApplicationServices;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
-using PresentationLayer;
-using PresentationLayer.ImageProcessing;
-using PresentationLayer.ImageProcessing.EdgeDetector;
+using PictureEditor;
+using PictureEditor.ImageProcessing;
+using PictureEditor.ImageProcessing.EdgeDetector;
 using System;
 using System.Drawing;
 using System.Windows.Forms;

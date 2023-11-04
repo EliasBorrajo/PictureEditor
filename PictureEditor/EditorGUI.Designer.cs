@@ -1,4 +1,4 @@
-﻿namespace PresentationLayer
+﻿namespace PictureEditor
 {
     /// <summary>
     /// Application GUI for Picture Editor Program
@@ -35,11 +35,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditorGUI));
             pictureBox = new PictureBox();
             btnLoadImage = new Button();
-            btnFilterHell = new Button();
+            btnFilterMagic = new Button();
             btnSaveImage = new Button();
             btnFilterBlackWhite = new Button();
             groupBoxPictureData = new GroupBox();
             groupBoxFilters = new GroupBox();
+            btnFilterSwap = new Button();
             groupBoxEdgesDetection = new GroupBox();
             trackBarThreshold = new TrackBar();
             checkBox_SameXY = new CheckBox();
@@ -77,16 +78,16 @@
             btnLoadImage.UseVisualStyleBackColor = true;
             btnLoadImage.Click += btnLoadImage_Click;
             // 
-            // btnFilterHell
+            // btnFilterMagic
             // 
-            btnFilterHell.Location = new Point(20, 75);
-            btnFilterHell.Margin = new Padding(10, 8, 10, 8);
-            btnFilterHell.Name = "btnFilterHell";
-            btnFilterHell.Size = new Size(340, 96);
-            btnFilterHell.TabIndex = 33;
-            btnFilterHell.Text = "Hell Filter";
-            btnFilterHell.UseVisualStyleBackColor = true;
-            btnFilterHell.Click += btnFilterHell_Click;
+            btnFilterMagic.Location = new Point(20, 75);
+            btnFilterMagic.Margin = new Padding(10, 8, 10, 8);
+            btnFilterMagic.Name = "btnFilterMagic";
+            btnFilterMagic.Size = new Size(340, 96);
+            btnFilterMagic.TabIndex = 33;
+            btnFilterMagic.Text = "Magic Mosaic";
+            btnFilterMagic.UseVisualStyleBackColor = true;
+            btnFilterMagic.Click += btnFilterMagic_Click;
             // 
             // btnSaveImage
             // 
@@ -125,16 +126,28 @@
             // 
             // groupBoxFilters
             // 
-            groupBoxFilters.Controls.Add(btnFilterHell);
+            groupBoxFilters.Controls.Add(btnFilterSwap);
+            groupBoxFilters.Controls.Add(btnFilterMagic);
             groupBoxFilters.Controls.Add(btnFilterBlackWhite);
             groupBoxFilters.Location = new Point(1673, 407);
             groupBoxFilters.Margin = new Padding(10, 8, 10, 8);
             groupBoxFilters.Name = "groupBoxFilters";
             groupBoxFilters.Padding = new Padding(10, 8, 10, 8);
-            groupBoxFilters.Size = new Size(751, 256);
+            groupBoxFilters.Size = new Size(751, 291);
             groupBoxFilters.TabIndex = 41;
             groupBoxFilters.TabStop = false;
             groupBoxFilters.Text = "Filters";
+            // 
+            // btnFilterSwap
+            // 
+            btnFilterSwap.Location = new Point(202, 187);
+            btnFilterSwap.Margin = new Padding(10, 8, 10, 8);
+            btnFilterSwap.Name = "btnFilterSwap";
+            btnFilterSwap.Size = new Size(340, 96);
+            btnFilterSwap.TabIndex = 40;
+            btnFilterSwap.Text = "Swap";
+            btnFilterSwap.UseVisualStyleBackColor = true;
+            btnFilterSwap.Click += btnFilterSwap_Click;
             // 
             // groupBoxEdgesDetection
             // 
@@ -228,7 +241,7 @@
             Margin = new Padding(10, 8, 10, 8);
             Name = "EditorGUI";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Program1_Elias_Romain";
+            Text = "PictureEditor";
             Load += Form_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
             groupBoxPictureData.ResumeLayout(false);
@@ -243,7 +256,7 @@
 
         private PictureBox pictureBox;
         private Button btnLoadImage;
-        private Button btnFilterHell;
+        private Button btnFilterMagic;
         private Button btnSaveImage;
         private Button btnFilterBlackWhite;
         private GroupBox groupBoxPictureData;
@@ -255,5 +268,6 @@
         private CheckBox checkBox_SameXY;
         private Button btnCancelFilters;
         private TrackBar trackBarThreshold;
+        private Button btnFilterSwap;
     }
 }

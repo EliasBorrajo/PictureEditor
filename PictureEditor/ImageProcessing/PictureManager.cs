@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PresentationLayer.ImageProcessing
+namespace PictureEditor.ImageProcessing
 {
     /// <summary>
     /// Picture Manager class for loading and saving images from or to the file system.
