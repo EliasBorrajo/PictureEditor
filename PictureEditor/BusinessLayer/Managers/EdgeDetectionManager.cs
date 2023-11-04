@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PictureEditor.BusinessLayer.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -6,26 +7,18 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PictureEditor.ImageProcessing.EdgeDetector
+namespace PictureEditor.BusinessLayer.Managers
 {
-    public static class EdgeDetectorAlgorithm
+    public class EdgeDetectionManager : IEdgeDetection
     {
-        /// <summary>
-        /// Applies edge detection filters to the input bitmap using the specified X and Y filter matrices and a given threshold.
-        /// </summary>
-        /// <param name="inputCurrentBitmap">The input bitmap to which edge detection filters will be applied.</param>
-        /// <param name="xFilterMatrix">The X filter matrix used for horizontal edge detection.</param>
-        /// <param name="yFilterMatrix">The Y filter matrix used for vertical edge detection.</param>
-        /// <param name="threshold">The threshold value used to determine whether a pixel is considered an edge or not.</param>
-        /// <returns>A new bitmap with edge detection filters applied.</returns>
-        public static Bitmap ApplyEdgeDetector(Bitmap inputCurrentBitmap, double[,] xFilterMatrix, double[,] yFilterMatrix, int threshold)
+        public Bitmap ApplyEdgeDetector(Bitmap inputCurrentBitmap, double[,] xFilterMatrix, double[,] yFilterMatrix, int threshold)
         {
             // Create a new bitmap with the same dimensions as the input bitmap
             Bitmap newBitmap = new Bitmap(inputCurrentBitmap);
 
             // Lock the bits of the new bitmap for reading and writing
-            BitmapData bitmapData = newBitmap.LockBits(new Rectangle(0, 0, newBitmap.Width, newBitmap.Height), 
-                                                                                         ImageLockMode.ReadOnly, 
+            BitmapData bitmapData = newBitmap.LockBits(new Rectangle(0, 0, newBitmap.Width, newBitmap.Height),
+                                                                                         ImageLockMode.ReadOnly,
                                                                                          PixelFormat.Format32bppPArgb);
 
             // Create a result bitmap with the same dimensions as the input bitmap
@@ -34,7 +27,7 @@ namespace PictureEditor.ImageProcessing.EdgeDetector
             try
             {
                 // Create buffers to store pixel data
-                byte[] pixelBuffer  = new byte[bitmapData.Stride * bitmapData.Height];
+                byte[] pixelBuffer = new byte[bitmapData.Stride * bitmapData.Height];
                 byte[] resultBuffer = new byte[bitmapData.Stride * bitmapData.Height];
 
                 // Copy pixel data from the input bitmap to the pixel buffer
@@ -43,9 +36,9 @@ namespace PictureEditor.ImageProcessing.EdgeDetector
                 // Apply edge detection filters to each pixel of the bitmap
                 // the offset is set to 1 to avoid the edges of the image
                 // the height and width are set to -1 to avoid the edges of the image
-                for (int offsetY = 1; offsetY < newBitmap.Height -1 ; offsetY++)
+                for (int offsetY = 1; offsetY < newBitmap.Height - 1; offsetY++)
                 {
-                    for (int offsetX = 1; offsetX < newBitmap.Width -1 ; offsetX++)
+                    for (int offsetX = 1; offsetX < newBitmap.Width - 1; offsetX++)
                     {
                         // Apply filters to the current pixel
                         ApplyFiltersToPixel(offsetX, offsetY, bitmapData, pixelBuffer, resultBuffer, xFilterMatrix, yFilterMatrix, threshold);
@@ -53,8 +46,8 @@ namespace PictureEditor.ImageProcessing.EdgeDetector
                 }
 
                 // Lock the bits of the result bitmap for writing
-                BitmapData resultData = resultBitmap.LockBits(new Rectangle(0, 0, resultBitmap.Width, resultBitmap.Height), 
-                                                                                            ImageLockMode.WriteOnly, 
+                BitmapData resultData = resultBitmap.LockBits(new Rectangle(0, 0, resultBitmap.Width, resultBitmap.Height),
+                                                                                            ImageLockMode.WriteOnly,
                                                                                             PixelFormat.Format32bppArgb);
 
                 try
@@ -78,26 +71,7 @@ namespace PictureEditor.ImageProcessing.EdgeDetector
             return resultBitmap;
         }
 
-
-        /// <summary>
-        /// Applies the specified X and Y filter matrices to the pixel at the given coordinates in the input bitmap.
-        /// </summary>
-        /// <param name="x">The x-coordinate of the pixel in the bitmap.</param>
-        /// <param name="y">The y-coordinate of the pixel in the bitmap.</param>
-        /// <param name="bitmapData">Bitmap data containing pixel information.</param>
-        /// <param name="pixelBuffer">Buffer containing pixel data from the input bitmap.</param>
-        /// <param name="resultBuffer">Buffer to store the filtered pixel data.</param>
-        /// <param name="xFilterMatrix">The X filter matrix used for horizontal edge detection.</param>
-        /// <param name="yFilterMatrix">The Y filter matrix used for vertical edge detection.</param>
-        /// <param name="threshold">The threshold value used to determine whether a pixel is considered an edge or not.</param>
-        private static void ApplyFiltersToPixel(int x, 
-                                                                    int y, 
-                                                                    BitmapData bitmapData, 
-                                                                    byte[] pixelBuffer, 
-                                                                    byte[] resultBuffer, 
-                                                                    double[,] xFilterMatrix, 
-                                                                    double[,] yFilterMatrix,
-                                                                    int threshold)
+        public void ApplyFiltersToPixel(int x, int y, BitmapData bitmapData, byte[] pixelBuffer, byte[] resultBuffer, double[,] xFilterMatrix, double[,] yFilterMatrix, int threshold)
         {
             double blueX = 0.0;
             double greenX = 0.0;
@@ -107,7 +81,7 @@ namespace PictureEditor.ImageProcessing.EdgeDetector
             double greenY = 0.0;
             double redY = 0.0;
 
-            int filterOffset = 1; 
+            int filterOffset = 1;
             int byteOffset = y * bitmapData.Stride + x * 4; // 4 bytes per pixel (blue, green, red, alpha)
 
             // Apply the X and Y filter matrices to the pixel at the specified coordinates
@@ -131,7 +105,7 @@ namespace PictureEditor.ImageProcessing.EdgeDetector
 
             // Calculate the total intensity values after applying filters
             double greenTotal = Math.Sqrt(greenX * greenX + greenY * greenY);
-            double redTotal = Math.Sqrt(redX * redX + redY * redY); 
+            double redTotal = Math.Sqrt(redX * redX + redY * redY);
 
             // Determine whether the pixel should be considered an edge based on the threshold value
             // trackBarThreshold est utilisé comme seuil pour déterminer si un pixel doit être considéré
@@ -152,12 +126,7 @@ namespace PictureEditor.ImageProcessing.EdgeDetector
             resultBuffer[byteOffset + 3] = 255;
         }
 
-        /// <summary>
-        /// Gets the filter matrix corresponding to the specified filter name.
-        /// </summary>
-        /// <param name="filterName"></param>
-        /// <returns> Returns the filter matrix corresponding to the specified filter name.</returns>
-        public static double[,] GetFilterMatrix(string filterName)
+        public double[,] GetFilterMatrix(string filterName)
         {
             switch (filterName)
             {
@@ -189,6 +158,5 @@ namespace PictureEditor.ImageProcessing.EdgeDetector
                     return Matrix.Laplacian3x3;         // TODO : Change with -> return null;
             }
         }
-
     }
 }

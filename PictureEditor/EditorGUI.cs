@@ -9,8 +9,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PictureEditor.ImageProcessing;
-using PictureEditor.ImageProcessing.EdgeDetector;
+using PresentationLayer.ImageProcessing;
+using PresentationLayer.ImageProcessing.EdgeDetector;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
