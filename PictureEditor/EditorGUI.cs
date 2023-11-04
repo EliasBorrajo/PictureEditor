@@ -198,12 +198,10 @@ namespace PictureEditor
                 edgeDetectionApplied = true;
             }
 
-            Console.WriteLine("TEST1");
-           // Console.WriteLine("TEST IMG" + pictureBox.ToString);
+
             pictureBox.Image = currentBitmap; // Display the filtered image in the picture box
             edgeDetectionApplied = true;
-            Console.WriteLine("TEST2");
-            //Console.WriteLine("TEST IMG" + pictureBox.ToString);
+
         }
 
         /// <summary>
