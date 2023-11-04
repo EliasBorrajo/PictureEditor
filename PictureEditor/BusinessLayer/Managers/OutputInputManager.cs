@@ -9,13 +9,13 @@ namespace PictureEditor.BusinessLayer.Managers
 {
     public class OutputInputManager : IOutputInput
     {
-        public void SaveImage(Image imageToSave)
+        public bool SaveImageToFileSystem(Image imageToSave)
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
                 saveFileDialog.Filter = "PNG Image|*.png|JPEG Image|*.jpg|Bitmap Image|*.bmp";
                 saveFileDialog.Title = "Save an Image File";
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                if (saveFileDialog.ShowDialog() == DialogResult.OK) // 
                 {
                     System.Drawing.Imaging.ImageFormat format = System.Drawing.Imaging.ImageFormat.Png; // Default to PNG
                     switch (saveFileDialog.FilterIndex)
@@ -33,12 +33,19 @@ namespace PictureEditor.BusinessLayer.Managers
                     MessageBox.Show(
                         "Image saved successfully!",
                         "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                    return true;
                 }
+                
             }
+            return false;
         }
 
-        public Image LoadImage()
+		public void SaveImageToDB(Image imageToSave)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Image LoadImage()
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -51,5 +58,7 @@ namespace PictureEditor.BusinessLayer.Managers
                 return null;
             }
         }
+
+        
     }
 }

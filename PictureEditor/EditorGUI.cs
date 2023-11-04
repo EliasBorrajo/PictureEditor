@@ -67,13 +67,13 @@ namespace PictureEditor
         /// </summary>
         private void PopulateFiltersListBoxes()
         {
-            // Fill listBox_XFilter & listBox_YFilter with enum values
-            foreach (EdgeFinderAlgorithms algorithm in Enum.GetValues(typeof(EdgeFinderAlgorithms)))
-            {
-                listBox_X_Algorithms.Items.Add(algorithm);
-                listBox_Y_Algorithms.Items.Add(algorithm);
-            }
-        }
+			// Fill listBox_XFilter & listBox_YFilter with algorithm names from the dictionary keys
+			foreach (var algorithmName in IEdgeDetection.GetAvailableAlgorithms())
+			{
+				listBox_X_Algorithms.Items.Add(algorithmName);
+				listBox_Y_Algorithms.Items.Add(algorithmName);
+			}
+		}
 
         /// <summary>
         ///  Set the picture box image to the given image (disposing the previous image in the picture box) 
@@ -108,7 +108,7 @@ namespace PictureEditor
 
         private void btnSaveImage_Click(object sender, EventArgs e)
         {
-            IOutputInput.SaveImage(pictureBox.Image);
+            IOutputInput.SaveImageToFileSystem(pictureBox.Image);
         }
 
         #endregion

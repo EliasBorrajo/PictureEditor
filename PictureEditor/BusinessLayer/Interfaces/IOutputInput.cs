@@ -8,7 +8,8 @@ namespace PictureEditor.BusinessLayer.Interfaces
 {
     public interface IOutputInput
     {
-        void SaveImage(Image imageToSave);
+        bool SaveImageToFileSystem(Image imageToSave);
+        void SaveImageToDB(Image imageToSave);
         Image LoadImage();
     }
 }
