@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PresentationLayer.ImageProcessing.EdgeDetector
+namespace PictureEditor.BusinessLayer.Managers
 {
     /// <summary>
     /// Matrix class for storing the different edge detection matrices used by the edge detection algorithms.
