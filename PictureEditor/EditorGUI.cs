@@ -9,6 +9,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PictureEditor.BusinessLayer.Interfaces;
+using PictureEditor.BusinessLayer.Managers;
 using PresentationLayer.ImageProcessing;
 using PresentationLayer.ImageProcessing.EdgeDetector;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -22,14 +24,22 @@ namespace PictureEditor
     public partial class EditorGUI : Form
     {
         // A T T R I B U T E S
-        private Bitmap currentBitmap;       // Bitmap currently being displayed in the picture box
-        private Image originalImage;         // Original image loaded into the picture box (used for resetting)
-        private bool edgeDetectionApplied;   // Whether the edge detection has been applied to the image. Can only be applied once.
+        private Bitmap currentBitmap;               // Bitmap currently being displayed in the picture box
+        private Image originalImage;                 // Original image loaded into the picture box (used for resetting)
+        private bool edgeDetectionApplied;      // Whether the edge detection has been applied to the image. Can only be applied once.
+        private IOutputInput IOutputInput;          // OutputInput object to handle the input and output of images
+        private IEdgeDetection IEdgeDetection;  // EdgeDetection object to handle the edge detection of images
+        private IFilters IFilters;                               // Filters object to handle the filters of images
 
         // C  O N S T R U C T O R
         public EditorGUI()
         {
             InitializeComponent();
+
+            // Inject the dependencies
+            IOutputInput     = new OutputInputManager();
+            IEdgeDetection = new EdgeDetectionManager(); 
+            IFilters                = new FiltersManager();
         }
 
         // M E T H O D S
@@ -87,7 +97,7 @@ namespace PictureEditor
 
         private void btnLoadImage_Click(object sender, EventArgs e)
         {
-            var loadedImage = PictureManager.LoadImage();
+            var loadedImage = IOutputInput.LoadImage(); 
             if (loadedImage != null)
             {
                 SetPictureBoxImage(loadedImage);
@@ -97,7 +107,7 @@ namespace PictureEditor
 
         private void btnSaveImage_Click(object sender, EventArgs e)
         {
-            PictureManager.SaveImage(pictureBox.Image);
+            IOutputInput.SaveImage(pictureBox.Image);
         }
 
         #endregion
@@ -114,21 +124,21 @@ namespace PictureEditor
         private void btnFilterBlackWhite_Click(object sender, EventArgs e)
         {
             // new Bitmap(pictureBox.Image) creates a copy of the image in the picture box
-            currentBitmap = ImageFilters.BlackWhite(new Bitmap(pictureBox.Image));
+            currentBitmap = IFilters.BlackWhite(new Bitmap(pictureBox.Image));
             pictureBox.Image = currentBitmap;
         }
 
         private void btnFilterSwap_Click(object sender, EventArgs e)
         {
             // new Bitmap(pictureBox.Image) creates a copy of the image in the picture box
-            currentBitmap = ImageFilters.DivideCrop(new Bitmap(pictureBox.Image));
+            currentBitmap = IFilters.Swap(new Bitmap(pictureBox.Image));
             pictureBox.Image = currentBitmap;
         }
 
         private void btnFilterMagic_Click(object sender, EventArgs e)
         {
             // new Bitmap(pictureBox.Image) creates a copy of the image in the picture box
-            currentBitmap = ImageFilters.ApplyFilter(new Bitmap(pictureBox.Image), 1, 1, 10, 15);
+            currentBitmap = IFilters.MagicMosaic(new Bitmap(pictureBox.Image));
             pictureBox.Image = currentBitmap;
         }
 
@@ -168,8 +178,8 @@ namespace PictureEditor
 
 
                 // Get the algo filters matrices with the selected names
-                double[,] xFilterMatrix = EdgeDetectorAlgorithm.GetFilterMatrix(selectedXFilter);
-                double[,] yFilterMatrix = EdgeDetectorAlgorithm.GetFilterMatrix(selectedYFilter);
+                double[,] xFilterMatrix = IEdgeDetection.GetFilterMatrix(selectedXFilter); 
+                double[,] yFilterMatrix = IEdgeDetection.GetFilterMatrix(selectedYFilter);
 
                 if (xFilterMatrix == null || yFilterMatrix == null)
                 {
@@ -181,14 +191,14 @@ namespace PictureEditor
                 // Verify the checkbox value, and apply the filter accordingly (X, Y or the same)
                 if (checkBox_SameXY.Checked)
                 {
-                    currentBitmap = EdgeDetectorAlgorithm.ApplyEdgeDetector(currentBitmap,
+                    currentBitmap = IEdgeDetection.ApplyEdgeDetector(currentBitmap,
                                                                                                                         xFilterMatrix,
                                                                                                                         xFilterMatrix,
                                                                                                                         threshold);
                 }
                 else
                 {
-                    currentBitmap = EdgeDetectorAlgorithm.ApplyEdgeDetector(currentBitmap,
+                    currentBitmap = IEdgeDetection.ApplyEdgeDetector(currentBitmap,
                                                                                                                         xFilterMatrix,
                                                                                                                         yFilterMatrix,
                                                                                                                         threshold);
