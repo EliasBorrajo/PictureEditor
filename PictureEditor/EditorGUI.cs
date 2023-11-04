@@ -97,11 +97,13 @@ namespace PictureEditor
 
         private void btnLoadImage_Click(object sender, EventArgs e)
         {
-            var loadedImage = IOutputInput.LoadImage();
-            if (loadedImage != null)
+            using (var loadedImage = IOutputInput.LoadImage())
             {
-                SetPictureBoxImage(loadedImage);
-                originalImage = pictureBox.Image;
+                if (loadedImage != null)
+                {
+                    SetPictureBoxImage(loadedImage);
+                    originalImage = pictureBox.Image;
+                }
             }
         }
 
@@ -123,28 +125,26 @@ namespace PictureEditor
         /// <param name="e"></param>
         private void btnFilterBlackWhite_Click(object sender, EventArgs e)
         {
-            // new Bitmap(pictureBox.Image) creates a copy of the image in the picture box
-            currentBitmap = IFilters.BlackWhite(new Bitmap(pictureBox.Image));
-            SetPictureBoxImage(currentBitmap);
-            //pictureBox.Image = currentBitmap;
+            using (var newBitmap = IFilters.BlackWhite(new Bitmap(pictureBox.Image)))
+            {
+                SetPictureBoxImage(newBitmap);
+            }
         }
 
         private void btnFilterSwap_Click(object sender, EventArgs e)
         {
-            // new Bitmap(pictureBox.Image) creates a copy of the image in the picture box
-            currentBitmap = IFilters.Swap(new Bitmap(pictureBox.Image));
-            //pictureBox.Image = currentBitmap;
-            SetPictureBoxImage(currentBitmap);
-
+            using (var newBitmap = IFilters.Swap(new Bitmap(pictureBox.Image)))
+            {
+                SetPictureBoxImage(newBitmap);
+            }
         }
 
         private void btnFilterMagic_Click(object sender, EventArgs e)
         {
-            // new Bitmap(pictureBox.Image) creates a copy of the image in the picture box
-            currentBitmap = IFilters.MagicMosaic(new Bitmap(pictureBox.Image));
-            //pictureBox.Image = currentBitmap;
-            SetPictureBoxImage(currentBitmap);
-
+            using (var newBitmap = IFilters.MagicMosaic(new Bitmap(pictureBox.Image)))
+            {
+                SetPictureBoxImage(newBitmap);
+            }
         }
 
 
@@ -197,14 +197,19 @@ namespace PictureEditor
                     // Verify the checkbox value, and apply the filter accordingly (X, Y or the same)
                     if (checkBox_SameXY.Checked)
                     {
-                        currentBitmap = IEdgeDetection.detectPictureEdges(currentBitmap, xFilterMatrix, xFilterMatrix);
+                        using (var tempBitmap = new Bitmap(currentBitmap))
+                        {
+                            currentBitmap = IEdgeDetection.detectPictureEdges(tempBitmap, xFilterMatrix, xFilterMatrix);
+                        }
                     }
                     else
                     {
-                        currentBitmap = IEdgeDetection.detectPictureEdges(currentBitmap, xFilterMatrix, yFilterMatrix);
+                        using (var tempBitmap = new Bitmap(currentBitmap))
+                        {
+                            currentBitmap = IEdgeDetection.detectPictureEdges(tempBitmap, xFilterMatrix, yFilterMatrix);
+                        }
                     }
 
-                    //pictureBox.Image = currentBitmap; // Display the filtered image in the picture box
                     SetPictureBoxImage(currentBitmap);
                     edgeDetectionApplied = true;
                 }
@@ -212,6 +217,10 @@ namespace PictureEditor
                 {
                     MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+            else
+            {
+                MessageBox.Show("Please select an algorithm for X and Y axis.");
             }
         }
 
