@@ -9,16 +9,7 @@ namespace PictureEditor.BusinessLayer.Interfaces
 {
     internal interface IEdgeDetection
     {
-        Bitmap ApplyEdgeDetector(Bitmap inputCurrentBitmap, double[,] xFilterMatrix, double[,] yFilterMatrix, int threshold);
-        void ApplyFiltersToPixel(int x,
-                                                                    int y,
-                                                                    BitmapData bitmapData,
-                                                                    byte[] pixelBuffer,
-                                                                    byte[] resultBuffer,
-                                                                    double[,] xFilterMatrix,
-                                                                    double[,] yFilterMatrix,
-                                                                    int threshold);
         double[,] GetFilterMatrix(string filterName);
-
+        Bitmap detectPictureEdges(Bitmap inputCurrentBitmap, double[,] xFilterMatrix, double[,] yFilterMatrix);
     }
 }
