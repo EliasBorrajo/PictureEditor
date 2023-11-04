@@ -23,4 +23,9 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="BusinessLayer\Interfaces\" />
+    <Folder Include="BusinessLayer\Managers\" />
+  </ItemGroup>
+
 </Project>
