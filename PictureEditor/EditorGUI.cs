@@ -36,9 +36,9 @@ namespace PictureEditor
             InitializeComponent();
 
             // Inject the dependencies
-            IOutputInput     = new OutputInputManager();
-            IEdgeDetection = new EdgeDetectionManager(); 
-            IFilters                = new FiltersManager();
+            IOutputInput = new OutputInputManager();
+            IEdgeDetection = new EdgeDetectionManager();
+            IFilters = new FiltersManager();
         }
 
         // M E T H O D S
@@ -96,11 +96,13 @@ namespace PictureEditor
 
         private void btnLoadImage_Click(object sender, EventArgs e)
         {
-            var loadedImage = IOutputInput.LoadImage(); 
-            if (loadedImage != null)
+            using (var loadedImage = IOutputInput.LoadImage())
             {
-                SetPictureBoxImage(loadedImage);
-                originalImage = pictureBox.Image;
+                if (loadedImage != null)
+                {
+                    SetPictureBoxImage(loadedImage);
+                    originalImage = pictureBox.Image;
+                }
             }
         }
 
@@ -122,23 +124,26 @@ namespace PictureEditor
         /// <param name="e"></param>
         private void btnFilterBlackWhite_Click(object sender, EventArgs e)
         {
-            // new Bitmap(pictureBox.Image) creates a copy of the image in the picture box
-            currentBitmap = IFilters.BlackWhite(new Bitmap(pictureBox.Image));
-            pictureBox.Image = currentBitmap;
+            using (var newBitmap = IFilters.BlackWhite(new Bitmap(pictureBox.Image)))
+            {
+                SetPictureBoxImage(newBitmap);
+            }
         }
 
         private void btnFilterSwap_Click(object sender, EventArgs e)
         {
-            // new Bitmap(pictureBox.Image) creates a copy of the image in the picture box
-            currentBitmap = IFilters.Swap(new Bitmap(pictureBox.Image));
-            pictureBox.Image = currentBitmap;
+            using (var newBitmap = IFilters.Swap(new Bitmap(pictureBox.Image)))
+            {
+                SetPictureBoxImage(newBitmap);
+            }
         }
 
         private void btnFilterMagic_Click(object sender, EventArgs e)
         {
-            // new Bitmap(pictureBox.Image) creates a copy of the image in the picture box
-            currentBitmap = IFilters.MagicMosaic(new Bitmap(pictureBox.Image));
-            pictureBox.Image = currentBitmap;
+            using (var newBitmap = IFilters.MagicMosaic(new Bitmap(pictureBox.Image)))
+            {
+                SetPictureBoxImage(newBitmap);
+            }
         }
 
 
@@ -152,7 +157,7 @@ namespace PictureEditor
         private void btnApplyEdgeDetector_Click(object sender, EventArgs e)
         {
             //bool filtersApplied = false; // To track whether filters have been applied
-            if(edgeDetectionApplied)
+            if (edgeDetectionApplied)
             {
                 MessageBox.Show("Edge detection has already been applied to this image.");
                 return;
@@ -177,7 +182,7 @@ namespace PictureEditor
 
 
                 // Get the algo filters matrices with the selected names
-                double[,] xFilterMatrix = IEdgeDetection.GetFilterMatrix(selectedXFilter); 
+                double[,] xFilterMatrix = IEdgeDetection.GetFilterMatrix(selectedXFilter);
                 double[,] yFilterMatrix = IEdgeDetection.GetFilterMatrix(selectedYFilter);
 
                 if (xFilterMatrix == null || yFilterMatrix == null)
@@ -186,31 +191,36 @@ namespace PictureEditor
                     return;
                 }
 
-                int threshold = trackBarThreshold.Value;
-                // Verify the checkbox value, and apply the filter accordingly (X, Y or the same)
-                if (checkBox_SameXY.Checked)
+                try
                 {
-                    currentBitmap = IEdgeDetection.ApplyEdgeDetector(currentBitmap,
-                                                                                                                        xFilterMatrix,
-                                                                                                                        xFilterMatrix,
-                                                                                                                        threshold);
-                }
-                else
-                {
-                    currentBitmap = IEdgeDetection.ApplyEdgeDetector(currentBitmap,
-                                                                                                                        xFilterMatrix,
-                                                                                                                        yFilterMatrix,
-                                                                                                                        threshold);
-                }
+                    // Verify the checkbox value, and apply the filter accordingly (X, Y or the same)
+                    if (checkBox_SameXY.Checked)
+                    {
+                        using (var tempBitmap = new Bitmap(currentBitmap))
+                        {
+                            currentBitmap = IEdgeDetection.detectPictureEdges(tempBitmap, xFilterMatrix, xFilterMatrix);
+                        }
+                    }
+                    else
+                    {
+                        using (var tempBitmap = new Bitmap(currentBitmap))
+                        {
+                            currentBitmap = IEdgeDetection.detectPictureEdges(tempBitmap, xFilterMatrix, yFilterMatrix);
+                        }
+                    }
 
-                //filtersApplied = true;
-                edgeDetectionApplied = true;
+                    SetPictureBoxImage(currentBitmap);
+                    edgeDetectionApplied = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-
-
-            pictureBox.Image = currentBitmap; // Display the filtered image in the picture box
-            edgeDetectionApplied = true;
-
+            else
+            {
+                MessageBox.Show("Please select an algorithm for X and Y axis.");
+            }
         }
 
         /// <summary>
@@ -240,7 +250,9 @@ namespace PictureEditor
         /// <param name="e"></param>
         private void btnCancelFilters_MouseClick(object sender, MouseEventArgs e)
         {
-            pictureBox.Image = originalImage;
+            //pictureBox.Image = originalImage;
+            SetPictureBoxImage(originalImage);
+
             edgeDetectionApplied = false;
             //groupBoxEdgesDetection.Enabled = false;
         }
