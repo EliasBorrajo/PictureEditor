@@ -6,11 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using PictureEditor;
-using PictureEditor.ImageProcessing;
-using PictureEditor.ImageProcessing.EdgeDetector;
-
-namespace PictureEditor_Test
+namespace PictureEditor_Test.Ellias
 {
     [TestClass]
     public class EdgeDetectorAlgorithm_Test
@@ -39,7 +35,7 @@ namespace PictureEditor_Test
 
             // 2) Apply the algorithm
             int threshold = 100; // Default value for the threshold in the designer form of the edge detector.
-            imageTest = EdgeDetectorAlgorithm.ApplyEdgeDetector( imageTest,
+            imageTest = EdgeDetectorAlgorithm.ApplyEdgeDetector(imageTest,
                                                                                                          xFilterMatrix,
                                                                                                          yFilterMatrix,
                                                                                                          threshold);
@@ -47,7 +43,7 @@ namespace PictureEditor_Test
             // 3) Compare the 2 images pixel by pixel to see if they are the same, there is a tolerance of 1 RGB value for each pixel
             int tolerance = 100;
             //Assert.IsTrue(util.CompareImages(laplacian3x3AlgoApplied, imageTest, tolerance));
-            Assert.IsTrue(true); 
+            Assert.IsTrue(true);
             // je sais que la couverture du code est remplie, mais les algos en X et Y sont non déterministes, donc impossible à prédire
         }
 

@@ -14,6 +14,7 @@
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
+    <PackageReference Include="NSubstitute" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,71 +22,72 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Ellias\Ressources\" />
     <Folder Include="Ressources\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Ressources\BlackAndWhite.bmp">
+    <None Update="Ellias\Ressources\BlackAndWhite.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\BlackAndWhite.jpg">
+    <None Update="Ellias\Ressources\BlackAndWhite.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\BlackAndWhite.png">
+    <None Update="Ellias\Ressources\BlackAndWhite.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\FilterHell.bmp">
+    <None Update="Ellias\Ressources\FilterHell.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\FilterHell.jpg">
+    <None Update="Ellias\Ressources\FilterHell.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\FilterHell.png">
+    <None Update="Ellias\Ressources\FilterHell.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\Hell_ForAlgo.bmp">
+    <None Update="Ellias\Ressources\Hell_ForAlgo.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\Hell_ForAlgo.jpg">
+    <None Update="Ellias\Ressources\Hell_ForAlgo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\Hell_ForAlgo.png">
+    <None Update="Ellias\Ressources\Hell_ForAlgo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\Hell_Laplacian3x3.bmp">
+    <None Update="Ellias\Ressources\Hell_Laplacian3x3.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\Hell_Laplacian3x3.jpg">
+    <None Update="Ellias\Ressources\Hell_Laplacian3x3.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\Hell_Laplacian3x3.png">
+    <None Update="Ellias\Ressources\Hell_Laplacian3x3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\Hell_Laplacian5x5.bmp">
+    <None Update="Ellias\Ressources\Hell_Laplacian5x5.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\Hell_Laplacian5x5.jpg">
+    <None Update="Ellias\Ressources\Hell_Laplacian5x5.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\Hell_Laplacian5x5.png">
+    <None Update="Ellias\Ressources\Hell_Laplacian5x5.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\Hell_X_Laplacian3x3_Y_Laplacian5x5.bmp">
+    <None Update="Ellias\Ressources\Hell_X_Laplacian3x3_Y_Laplacian5x5.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\Hell_X_Laplacian3x3_Y_Laplacian5x5.jpg">
+    <None Update="Ellias\Ressources\Hell_X_Laplacian3x3_Y_Laplacian5x5.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\Hell_X_Laplacian3x3_Y_Laplacian5x5.png">
+    <None Update="Ellias\Ressources\Hell_X_Laplacian3x3_Y_Laplacian5x5.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\original.bmp">
+    <None Update="Ellias\Ressources\original.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\original.jpg">
+    <None Update="Ellias\Ressources\original.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Ressources\original.png">
+    <None Update="Ellias\Ressources\original.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

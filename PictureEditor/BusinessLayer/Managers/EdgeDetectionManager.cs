@@ -1,4 +1,5 @@
 ﻿using PictureEditor.BusinessLayer.Interfaces;
+using PictureEditor.BusinessLayer.Managers.EdgeDetection;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
@@ -130,32 +131,14 @@ namespace PictureEditor.BusinessLayer.Managers
         {
             switch (filterName)
             {
-                case "Laplacian3x3":
-                    return Matrix.Laplacian3x3;
-                case "Laplacian5x5":
-                    return Matrix.Laplacian5x5;
-                case "LaplacianOfGaussian":
-                    return Matrix.LaplacianOfGaussian;
-                case "Gaussian3x3":
-                    return Matrix.Gaussian3x3;
-                case "Gaussian5x5Type1":
-                    return Matrix.Gaussian5x5Type1;
-                case "Gaussian5x5Type2":
-                    return Matrix.Gaussian5x5Type2;
-                case "Sobel3x3Horizontal":
-                    return Matrix.Sobel3x3Horizontal;
-                case "Sobel3x3Vertical":
-                    return Matrix.Sobel3x3Vertical;
-                case "Prewitt3x3Horizontal":
-                    return Matrix.Prewitt3x3Horizontal;
-                case "Prewitt3x3Vertical":
-                    return Matrix.Prewitt3x3Vertical;
-                case "Kirsch3x3Horizontal":
-                    return Matrix.Kirsch3x3Horizontal;
-                case "Kirsch3x3Vertical":
-                    return Matrix.Kirsch3x3Vertical;
+                case "Laplacian":
+                    return Matrix.Laplacian;
+                case "Sobel":
+                    return Matrix.Sobel;
+                case "Kirsch":
+                    return Matrix.Kirsch;
                 default:
-                    return Matrix.Laplacian3x3;         // TODO : Change with -> return null;
+                    return Matrix.Laplacian;      
             }
         }
     }

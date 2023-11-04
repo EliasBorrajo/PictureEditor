@@ -7,7 +7,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace PictureEditor_Test
+namespace PictureEditor_Test.Ellias
 {
     [TestClass]
     public class ImageFilters_Test
@@ -15,8 +15,8 @@ namespace PictureEditor_Test
 
         public static string ResourcesPath = Directory.GetCurrentDirectory() + "\\Ressources";
         public static string OriginalPath = ResourcesPath + "\\original.bmp";
-        public static string HellPath       = ResourcesPath + "\\FilterHell.bmp";
-        public static string BlackWhitePath  = ResourcesPath + "\\BlackAndWhite.bmp";
+        public static string HellPath = ResourcesPath + "\\FilterHell.bmp";
+        public static string BlackWhitePath = ResourcesPath + "\\BlackAndWhite.bmp";
 
 
 
@@ -43,10 +43,10 @@ namespace PictureEditor_Test
         {
             // 1) Load images
             Bitmap hellFilterApplied = new Bitmap(HellPath);         // 1) Load the image with the filter already applied
-            Bitmap imageTest            = new Bitmap(OriginalPath);    // 2) Load the original image to modify and then compare with the other image
+            Bitmap imageTest = new Bitmap(OriginalPath);    // 2) Load the original image to modify and then compare with the other image
 
             // 2) Apply the filter
-            imageTest = ImageFilters.ApplyFilter( imageTest , 1, 1, 10, 15);
+            imageTest = ImageFilters.ApplyFilter(imageTest, 1, 1, 10, 15);
 
             // 3) Compare the 2 images pixel by pixel to see if they are the same, there is a tolerance of 1 RGB value for each pixel
             int tolerance = 1;
@@ -73,7 +73,7 @@ namespace PictureEditor_Test
         }
 
 
-        
+
 
     }
 }
