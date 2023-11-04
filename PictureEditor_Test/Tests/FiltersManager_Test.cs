@@ -1,4 +1,5 @@
-﻿using NSubstitute;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
 using PictureEditor.BusinessLayer.Interfaces;
 using PictureEditor.BusinessLayer.Managers;
 using System;
@@ -13,6 +14,9 @@ namespace PictureEditor_Test.Tests
     [TestClass]
     public class FiltersManager_Test
     {
+        public static string RessourcePath = Directory.GetCurrentDirectory() + "\\Ressources";
+        public static string cheminImageTest = RessourcePath + "\\Moto.png";
+
         [TestMethod]
         public void TestBlackWhite()
         {
@@ -23,7 +27,6 @@ namespace PictureEditor_Test.Tests
             FiltersManager filtersManager = new FiltersManager();
 
             // Charger une image de test à partir d'un fichier (assurez-vous d'avoir une image appropriée dans le chemin spécifié)
-            string cheminImageTest = "PictureEditor\\PictureEditor_Test\\Ressources\\Moto.png";
             Bitmap inputBitmap = new Bitmap(cheminImageTest);
 
             // Définir le comportement du substitut
@@ -49,7 +52,6 @@ namespace PictureEditor_Test.Tests
             FiltersManager filtersManager = new FiltersManager();
 
             // Charger une image de test à partir d'un fichier (assurez-vous d'avoir une image appropriée dans le chemin spécifié)
-            string cheminImageTest = "PictureEditor\\PictureEditor_Test\\Ressources\\Moto.png";
             Bitmap inputBitmap = new Bitmap(cheminImageTest);
 
             // Définir le comportement du substitut
@@ -75,7 +77,6 @@ namespace PictureEditor_Test.Tests
             FiltersManager filtersManager = new FiltersManager();
 
             // Charger une image de test à partir d'un fichier (assurez-vous d'avoir une image appropriée dans le chemin spécifié)
-            string cheminImageTest = "PictureEditor\\PictureEditor_Test\\Ressources\\Moto.png";
             Bitmap inputBitmap = new Bitmap(cheminImageTest);
 
             // Définir le comportement du substitut

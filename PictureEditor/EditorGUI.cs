@@ -12,7 +12,6 @@ using System.Windows.Forms;
 using PictureEditor.BusinessLayer.Interfaces;
 using PictureEditor.BusinessLayer.Managers;
 using PictureEditor.BusinessLayer.Managers.EdgeDetection;
-using PresentationLayer.ImageProcessing;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
