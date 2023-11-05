@@ -142,7 +142,7 @@ namespace PictureEditor
                             break;
                     }
 
-                    bool success = IOutputInput.SaveImageToFileSystem_V2(pictureBox.Image, saveFileDialog, format);
+                    bool success = IOutputInput.SaveImageToFileSystem(pictureBox.Image, saveFileDialog, format);
 
                     if (success)
                     {

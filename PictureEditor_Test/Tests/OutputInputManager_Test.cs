@@ -7,12 +7,18 @@ using System.Windows.Forms;
 
 namespace PictureEditor_Test.Tests
 {
+	/// <summary>
+	/// Test class for the OutputInputManager class.
+	/// 
+	/// The CODE_COVERING uses the real implementation of the IOutputInput interface.
+	/// The SUBSTITUTES use a substitute (mock) of the IOutputInput interface.
+	/// 
+	/// Unit tests should be written using the CODE_COVERING approach.
+	/// Test doubles (substitutes) should be used only when the real implementation of the interface is not available.
+	/// </summary>
     [TestClass]
     public class OutputInputManager_Test
     {
-
-        public static string RessourcePath  = Directory.GetCurrentDirectory() + "\\Ressources";
-        public static string MotoPath         = RessourcePath + "\\Moto.png";
 
 		private IOutputInput? outputInputSubstitute;
 
@@ -22,65 +28,9 @@ namespace PictureEditor_Test.Tests
 			outputInputSubstitute = Substitute.For<IOutputInput>();
 		}
 
-		#region TestDoubles_Substitutes
 
-		//[TestMethod]
-		//public void LoadImage_ShouldReturnImageFromFile_WhenFileDialogReturnsOKResult()
-		//{
-		//	// ARRANGE - Create a mock of IOutputInput (mock = substitute)
-		//	//1)  Vous créez un mock de IOutputInput à l'aide de NSubstitute :
-		//	var outputInputMock = Substitute.For<IOutputInput>();
+		#region SaveImage_CODE_COVERING
 
-		//	//2) Vous configurez ce mock pour qu'il retourne une image spécifique lorsqu'il est appelé avec la méthode LoadImage() :
-		//	var expectedImage = new Bitmap(MotoPath); // Load image from file
-		//	outputInputMock.LoadImage().Returns(expectedImage);
-		//	// Ici, expectedImage est l'image que vous attendez de recevoir lorsque LoadImage() est appelé.
-		//	// Vous n'appelez pas réellement la méthode LoadImage() avec un chemin de fichier spécifique dans vos tests.
-		//	// Au lieu de cela, vous simulez son comportement en remplaçant son implémentation par votre mock configuré
-
-
-
-		//	// ACT - Call the method we want to test
-		//	var loadedImage = outputInputMock.LoadImage();
-
-
-
-		//	// ASSERT - Check that the method did what it was supposed to do
-		//	Assert.IsNotNull(loadedImage);
-		//	Assert.AreEqual(expectedImage, loadedImage);
-		//}
-
-		/// <summary>
-		/// vérifiez si la méthode SaveImageToFileSystem retourne true lorsque l'image est enregistrée avec succès
-		/// </summary>
-		[TestMethod]
-		public void SaveImageToFileSystem_ShouldReturnTrue_WhenImageIsSavedSuccessfully()
-		{
-			// Arrange
-			var outputInputMock = Substitute.For<IOutputInput>();
-			var image = new Bitmap(100, 100); // Sample image
-			outputInputMock.SaveImageToFileSystem_V2(Arg.Any<Image>()).Returns(true);
-
-			// Act
-			var result = outputInputMock.SaveImageToFileSystem_V2(image);
-
-			// Assert
-			Assert.IsTrue(result);
-		}
-
-
-		#endregion
-
-
-		#region UnitTests_CodeCoverage
-
-		/// <summary>
-		/// Cette assertion teste si l'appel à outputInputMock.SaveImageToDB 
-		/// avec n'importe quelle instance d'image (Arg.Any<Image>()) 
-		/// lève une exception de type NotImplementedException. 
-		/// Si la méthode SaveImageToDB n'est pas encore implémentée (ce qui est le cas selon votre description), 
-		/// l'assertion passera, confirmant que l'exception attendue a été levée.
-		/// </summary>
 		[TestMethod]
 		public void SaveImageToDB_ShouldThrow_NotImplementedException()
 		{
@@ -100,7 +50,7 @@ namespace PictureEditor_Test.Tests
 			var format = System.Drawing.Imaging.ImageFormat.Png;
 
 			// Act
-			bool result = outputInputManager.SaveImageToFileSystem_V2(image, saveFileDialog, format);
+			bool result = outputInputManager.SaveImageToFileSystem(image, saveFileDialog, format);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -117,12 +67,55 @@ namespace PictureEditor_Test.Tests
 			var format = System.Drawing.Imaging.ImageFormat.Png;
 
 			// Act
-			bool result = outputInputManager.SaveImageToFileSystem_V2(image, saveFileDialog, format);
+			bool result = outputInputManager.SaveImageToFileSystem(image, saveFileDialog, format);
 
 			// Assert
 			Assert.IsFalse(result);
 		}
 
+		#endregion
+
+
+		#region LoadImage_CODE_COVERING
+		[TestMethod]
+		public void LoadImage_ShouldReturnValidImage_WhenFilePathIsValid()
+		{
+			// Arrange
+			var outputInputManager = new OutputInputManager();
+			string RessourcePath = Directory.GetCurrentDirectory() + "\\Ressources";
+			string validFilePath = RessourcePath + "\\Moto.png";
+
+			// Act
+			Image result = null;
+			Exception exception = null;
+			try
+			{
+				result = outputInputManager.LoadImage(validFilePath);
+			}
+			catch (Exception ex)
+			{
+				exception = ex;
+			}
+
+			// Assert
+			Assert.IsNull(exception);
+			Assert.IsNotNull(result);
+			Assert.IsInstanceOfType(result, typeof(Image));
+		}
+
+		[TestMethod]
+		public void LoadImage_ShouldThrowException_WhenFilePathIsInvalid_CodeCovering()
+		{
+			// Arrange
+			var outputInputManager = new OutputInputManager();
+			var invalidFilePath = "path/to/invalid/&&&/image.jpg";
+
+			// Act & Assert
+			Assert.ThrowsException<Exception>(() => outputInputManager.LoadImage(invalidFilePath));
+		}
+		#endregion
+
+		#region LoadImage_SUBSTITUTES
 		[TestMethod]
 		public void LoadImage_ValidFilePath_ShouldReturnLoadedImage()
 		{
@@ -142,7 +135,6 @@ namespace PictureEditor_Test.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(Exception), "Error loading image: File not found.")]
 		public void LoadImage_InvalidFilePath_ShouldThrowException()
 		{
 			// Arrange
@@ -152,55 +144,45 @@ namespace PictureEditor_Test.Tests
 			outputInputSubstitute.LoadImage(Arg.Is(invalidFilePath)).Returns(_ => { throw new System.IO.FileNotFoundException(); });
 
 			// Act & Assert
-			Image result = outputInputSubstitute.LoadImage(invalidFilePath); // This should throw an exception
+			Assert.ThrowsException<System.IO.FileNotFoundException>(() => outputInputSubstitute.LoadImage(invalidFilePath));
 		}
 
+		#endregion
 
-		[TestMethod]
-		public void LoadImage_ShouldReturnLoadedImage_WhenFilePathIsValid()
-		{
-			// Arrange
-			var outputInputMock = Substitute.For<IOutputInput>();
-			var validFilePath = "valid/image/path.jpg";
-			var expectedImage = new Bitmap(100, 100); // Sample image
 
-			// Mock the LoadImage method to return the expected image
-			outputInputMock.LoadImage(Arg.Is(validFilePath)).Returns(expectedImage);
 
-			// Act
-			var result = outputInputMock.LoadImage(validFilePath);
+		
 
-			// Assert
-			Assert.IsNotNull(result);
-			Assert.AreEqual(expectedImage, result);
-		}
 
-		[TestMethod]
-		[ExpectedException(typeof(Exception), "Error loading image: File not found.")]
-		public void LoadImage_ShouldThrowException_WhenFilePathIsInvalid()
-		{
-			// Arrange
-			var outputInputMock = Substitute.For<IOutputInput>();
-			var invalidFilePath = "invalid/image/path.jpg";
-
-			// Mock the LoadImage method to throw a file not found exception
-			outputInputMock.LoadImage(Arg.Is(invalidFilePath)).Returns(_ => { throw new System.IO.FileNotFoundException(); });
-
-			// Act & Assert
-			Assert.ThrowsException<System.IO.FileNotFoundException>(() => outputInputMock.LoadImage(invalidFilePath));
-		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-	#endregion
 }
+
+
+// EXPLANATION OF SUBSTITUTES (MOCKS) AND HOW TO USE THEM
+//[TestMethod]
+//public void LoadImage_ShouldReturnImageFromFile_WhenFileDialogReturnsOKResult()
+//{
+//	// ARRANGE - Create a mock of IOutputInput (mock = substitute)
+//	//1)  Vous créez un mock de IOutputInput à l'aide de NSubstitute :
+//	var outputInputMock = Substitute.For<IOutputInput>();
+
+//	//2) Vous configurez ce mock pour qu'il retourne une image spécifique lorsqu'il est appelé avec la méthode LoadImage() :
+//	var expectedImage = new Bitmap(MotoPath); // Load image from file
+//	outputInputMock.LoadImage().Returns(expectedImage);
+//	// Ici, expectedImage est l'image que vous attendez de recevoir lorsque LoadImage() est appelé.
+//	// Vous n'appelez pas réellement la méthode LoadImage() avec un chemin de fichier spécifique dans vos tests.
+//	// Au lieu de cela, vous simulez son comportement en remplaçant son implémentation par votre mock configuré
+
+
+
+//	// ACT - Call the method we want to test
+//	var loadedImage = outputInputMock.LoadImage();
+
+
+
+//	// ASSERT - Check that the method did what it was supposed to do
+//	Assert.IsNotNull(loadedImage);
+//	Assert.AreEqual(expectedImage, loadedImage);
+//}
 
