@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PictureEditor.BusinessLayer.Interfaces
 {
-    internal interface IEdgeDetection
+    public interface IEdgeDetection
     {
         double[,] GetFilterMatrix(string filterName);
 		IEnumerable<string> GetAvailableAlgorithms();

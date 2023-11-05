@@ -14,82 +14,90 @@ namespace PictureEditor_Test.Tests
     [TestClass]
     public class FiltersManager_Test
     {
-		public static string RessourcePath = Directory.GetCurrentDirectory() + "\\Ressources";
-		public static string MotoPath = RessourcePath + "\\Moto.png";
+		public static string RessourcesPath		= Directory.GetCurrentDirectory() + "\\Ressources";
+		public static string OriginalPath			= RessourcesPath + "\\Original.bmp";
+		public static string BlackWhitePath		= RessourcesPath + "\\BlackAndWhite.bmp";
+		public static string SwapPath				= RessourcesPath + "\\Swap.bmp";
+		public static string MagicPath				= RessourcesPath + "\\Magic.bmp";
 
-		//[TestMethod]
-		//public void TestBlackWhite()
-		//{
-		//    // Créer un substitut de IFilters
-		//    IFilters filtersSubstitut = Substitute.For<IFilters>();
+		private IFilters?				 FiltersSubstitute;
+		private FiltersManager?	 FiltersManager;
 
-		//    // Créer une instance de FiltersManager avec le substitut
-		//    FiltersManager filtersManager = new FiltersManager();
+		[TestInitialize]
+		public void Initialize()
+		{
+			FiltersSubstitute = Substitute.For<IFilters>();
+			FiltersManager = new FiltersManager();
+		}
 
-		//    // Charger une image de test à partir d'un fichier (assurez-vous d'avoir une image appropriée dans le chemin spécifié)
-		//    Bitmap inputBitmap = new Bitmap(cheminImageTest);
 
-		//    // Définir le comportement du substitut
-		//    filtersSubstitut.BlackWhite(inputBitmap).Returns(inputBitmap);
+		[TestMethod]
+		public void TestMethod1()
+		{
+			//1)  Pour tester les filtres, 2 filtres à tester, il faut dabord le faire manuellement, sauver l'image fait manuellement, la mettre dans le dossier ressources
+			// et dans les paramètres -> (propriétés > Toujours copier !).
+			// Ensuite le test doit refaire mon truc manuel, et comparer mes 2 imgages pixel par pixel.
 
-		//    // Appeler la méthode que vous voulez tester
-		//    Bitmap resultBitmap = filtersManager.BlackWhite(inputBitmap);
+			// 2) Pour faire ça avec les algos, same avec 3 algos
 
-		//    // Vérifier que la méthode a été appelée avec le bon argument
-		//    filtersSubstitut.Received().BlackWhite(inputBitmap);
+			// Pour ces 5 trucs à tester, je dois couvrir le 100% de code coverage
 
-		//    // Vérifier que le résultat est le même que celui retourné par le substitut
-		//    Assert.AreSame(inputBitmap, resultBitmap);
-		//}
 
-		//[TestMethod]
-		//public void TestMagicMosaic()
-		//{
-		//    // Créer un substitut de IFilters
-		//    IFilters filtersSubstitut = Substitute.For<IFilters>();
+		}
 
-		//    // Créer une instance de FiltersManager avec le substitut
-		//    FiltersManager filtersManager = new FiltersManager();
+		/// <summary>
+		/// Test the filter "BlackWhite" with the original image. 
+		/// The filter "BlackWhite" is applied to the original image and then compared pixel by pixel with the image already modified.
+		/// </summary>
+		[TestMethod]
+		public void TestFilterBlackAndWhite()
+		{
+			// 1) Load images
+			Bitmap ImageReference	= new Bitmap(BlackWhitePath);         // 1) Load the image with the filter already applied
+			Bitmap imageToFilter		= new Bitmap(OriginalPath);                        // 2) Load the original image to modify and then compare with the other image
 
-		//    // Charger une image de test à partir d'un fichier (assurez-vous d'avoir une image appropriée dans le chemin spécifié)
-		//    Bitmap inputBitmap = new Bitmap(cheminImageTest);
+			// 2) Apply the filter
 
-		//    // Définir le comportement du substitut
-		//    filtersSubstitut.MagicMosaic(inputBitmap).Returns(inputBitmap);
+			imageToFilter = FiltersManager.BlackWhite(imageToFilter);
 
-		//    // Appeler la méthode que vous voulez tester
-		//    Bitmap resultBitmap = filtersManager.MagicMosaic(inputBitmap);
+			// 3) Compare the 2 images pixel by pixel to see if they are the same, there is a tolerance of 1 RGB value for each pixel
+			int tolerance = 1;
+			Assert.IsTrue(Util.CompareImages(ImageReference, imageToFilter, tolerance));
+		}
 
-		//    // Vérifier que la méthode a été appelée avec le bon argument
-		//    filtersSubstitut.Received().MagicMosaic(inputBitmap);
+		[TestMethod]
+		public void TestFilterSwap_ShouldSwapImageColors()
+		{
+			// 1) Load images
+			Bitmap ImageReference = new Bitmap(SwapPath);         // 1) Load the image with the filter already applied
+			Bitmap imageToFilter		= new Bitmap(OriginalPath);                        // 2) Load the original image to modify and then compare with the other image
 
-		//    // Vérifier que le résultat est le même que celui retourné par le substitut
-		//    Assert.AreSame(inputBitmap, resultBitmap);
-		//}
+			// 2) Apply the filter
 
-		//[TestMethod]
-		//public void TestSwap()
-		//{
-		//    // Créer un substitut de IFilters
-		//    IFilters filtersSubstitut = Substitute.For<IFilters>();
+			imageToFilter = FiltersManager.Swap(imageToFilter);
 
-		//    // Créer une instance de FiltersManager avec le substitut
-		//    FiltersManager filtersManager = new FiltersManager();
+			// 3) Compare the 2 images pixel by pixel to see if they are the same, there is a tolerance of 5 RGB value for each pixel
+			int tolerance = 5;
+			Assert.IsTrue(Util.CompareImages(ImageReference, imageToFilter, tolerance));
+		}
 
-		//    // Charger une image de test à partir d'un fichier (assurez-vous d'avoir une image appropriée dans le chemin spécifié)
-		//    Bitmap inputBitmap = new Bitmap(cheminImageTest);
+		[TestMethod]
+		public void TestFilterMagic_ShouldApplyMagicEffect()
+		{
+			// 1) Load images
+			Bitmap ImageReference	= new Bitmap(MagicPath);         // 1) Load the image with the filter already applied
+			Bitmap imageToFilter		= new Bitmap(OriginalPath);                        // 2) Load the original image to modify and then compare with the other image
 
-		//    // Définir le comportement du substitut
-		//    filtersSubstitut.Swap(inputBitmap).Returns(inputBitmap);
+			// 2) Apply the filter
 
-		//    // Appeler la méthode que vous voulez tester
-		//    Bitmap resultBitmap = filtersManager.Swap(inputBitmap);
+			imageToFilter = FiltersManager.MagicMosaic(imageToFilter);
 
-		//    // Vérifier que la méthode a été appelée avec le bon argument
-		//    filtersSubstitut.Received().Swap(inputBitmap);
+			// 3) Compare the 2 images pixel by pixel to see if they are the same, there is a tolerance of 1 RGB value for each pixel
+			int tolerance = 0;
+			Assert.IsTrue(Util.CompareImages(ImageReference, imageToFilter, tolerance));
+		}
 
-		//    // Vérifier que le résultat est le même que celui retourné par le substitut
-		//    Assert.AreSame(inputBitmap, resultBitmap);
-		//}
+
+
 	}
 }
