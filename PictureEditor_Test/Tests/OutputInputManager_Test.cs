@@ -150,18 +150,14 @@ namespace PictureEditor_Test.Tests
 		#endregion
 
 
-
-		
-
-
 	}
 
 }
 
 
-// EXPLANATION OF SUBSTITUTES (MOCKS) AND HOW TO USE THEM
-//[TestMethod]
-//public void LoadImage_ShouldReturnImageFromFile_WhenFileDialogReturnsOKResult()
+//// EXPLANATION OF SUBSTITUTES (MOCKS) AND HOW TO USE THEM
+////[TestMethod]
+////public void LoadImage_ShouldReturnImageFromFile_WhenFileDialogReturnsOKResult()
 //{
 //	// ARRANGE - Create a mock of IOutputInput (mock = substitute)
 //	//1)  Vous créez un mock de IOutputInput à l'aide de NSubstitute :
