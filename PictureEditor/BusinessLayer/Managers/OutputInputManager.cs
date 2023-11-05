@@ -9,7 +9,7 @@ namespace PictureEditor.BusinessLayer.Managers
 {
     public class OutputInputManager : IOutputInput
     {
-        public bool SaveImageToFileSystem(Image imageToSave)
+        public bool SaveImageToFileSystem_V2(Image imageToSave)
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
@@ -40,24 +40,37 @@ namespace PictureEditor.BusinessLayer.Managers
             return false;
         }
 
-		public void SaveImageToDB(Image imageToSave)
+		public bool SaveImageToFileSystem_V2(Image imageToSave, SaveFileDialog saveFileDialog, System.Drawing.Imaging.ImageFormat format)
+		{
+            try
+            {
+				imageToSave.Save(saveFileDialog.FileName, format);
+                return true;
+			}
+            catch (Exception)
+            {
+                return false;
+            }		
+		}
+
+		public void SaveImageToDB(Image imageToSave) 
 		{
 			throw new NotImplementedException();
 		}
 
-		public Image LoadImage()
+		public Image LoadImage(string filePath)
         {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
-                openFileDialog.Title = "Select an Image File";
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    return Image.FromFile(openFileDialog.FileName);
-                }
-                return null;
-            }
-        }
+			try
+			{
+				Image loadedImage = Image.FromFile(filePath);
+				return loadedImage;
+			}
+			catch (Exception ex)
+			{
+				// Handle the exception, log it, or throw a custom exception if needed
+				throw new Exception("Error loading image: " + ex.Message);
+			}
+		}
 
         
     }
