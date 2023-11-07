@@ -1,13 +1,7 @@
 ﻿using PictureEditor.BusinessLayer.Interfaces;
 using PictureEditor.BusinessLayer.Managers.EdgeDetection;
-using System;
-using System.Collections.Generic;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace PictureEditor.BusinessLayer.Managers
 {
