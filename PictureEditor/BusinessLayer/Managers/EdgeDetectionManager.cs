@@ -5,9 +5,13 @@ using System.Runtime.InteropServices;
 
 namespace PictureEditor.BusinessLayer.Managers
 {
+	/// <summary>
+	/// EdgeDetectionManager class for detecting the edges of an image. 
+	/// </summary>
 	public class EdgeDetectionManager : IEdgeDetection
 	{
-		private readonly Dictionary<string, double[,]> edgeDetectionMatrices;
+		// F I E L D S
+		private readonly Dictionary<string, double[,]> edgeDetectionMatrices;	// Dictionnary that contains the names of the algorithms as keys and the matrices as values.
 
 		// C O N S T R U C T O R
 		public EdgeDetectionManager()
@@ -15,9 +19,9 @@ namespace PictureEditor.BusinessLayer.Managers
 			// Initialisez le dictionnaire avec les noms des algorithmes en tant que clés et les matrices en tant que valeurs. 
 			edgeDetectionMatrices = new Dictionary<string, double[,]>
 			{
-				{ "Laplacian",			Matrix.Laplacian },
-				{ "Sobel",					Matrix.Sobel },
-				{ "Kirsch",					Matrix.Kirsch }
+				{ "Laplacian",		    Matrix.Laplacian },
+				{ "Sobel",                 Matrix.Sobel },
+				{ "Kirsch",                 Matrix.Kirsch }
 			};
 		}
 
@@ -40,15 +44,9 @@ namespace PictureEditor.BusinessLayer.Managers
 			return edgeDetectionMatrices.Keys;
 		}
 
-
-		/// <summary>
-		/// Détecte les bords de l'image en utilisant des filtres spécifiés.
-		/// </summary>
-		/// <param name="xfilter">Nom du filtre X.</param>
-		/// <param name="yfilter">Nom du filtre Y.</param>
 		public Bitmap detectPictureEdges(Bitmap inputCurrentBitmap, double[,] xFilterMatrix, double[,] yFilterMatrix)
 		{
-			
+
 			// Crée une copie de l'image dans un format modifiable.
 			Bitmap newbitmap = new Bitmap(inputCurrentBitmap);
 			BitmapData newbitmapData = new BitmapData();
@@ -116,8 +114,8 @@ namespace PictureEditor.BusinessLayer.Managers
 					double redTotal = 0;
 
 					if (greenTotal > 255)
-					{ 
-						greenTotal = 255; 
+					{
+						greenTotal = 255;
 					}
 
 					resultbuff[byteOffset] = (byte)(blueTotal);

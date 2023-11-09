@@ -1,14 +1,13 @@
-﻿using PictureEditor.BusinessLayer;
-using PictureEditor.BusinessLayer.Interfaces;
+﻿using PictureEditor.BusinessLayer.Interfaces;
 using PictureEditor.BusinessLayer.Managers;
 using PictureEditor.DAL;
 
 namespace PictureEditor
 {
-    /// <summary>
-    ///  Controller for the Picture Editor Program GUI 
-    /// </summary>
-    public partial class EditorGUI : Form
+	/// <summary>
+	///  Controller for the Picture Editor Program GUI 
+	/// </summary>
+	public partial class EditorGUI : Form
 	{
 		// A T T R I B U T E S
 		private Bitmap currentBitmap;               // Bitmap currently being displayed in the picture box

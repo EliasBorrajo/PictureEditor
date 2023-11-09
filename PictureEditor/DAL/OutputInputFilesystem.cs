@@ -1,11 +1,9 @@
-﻿using PictureEditor.DAL;
-
-namespace PictureEditor.DAL
+﻿namespace PictureEditor.DAL
 {
-    /// <summary>
-    /// Class to handle the input and output of images from the filesystem.
-    /// </summary>
-    public class OutputInputFilesystem : IOutputInput // Implementing the IOutputInput interface
+	/// <summary>
+	/// Class to handle the input and output of images from the filesystem.
+	/// </summary>
+	public class OutputInputFilesystem : IOutputInput // Implementing the IOutputInput interface
 	{
 		/// <summary>
 		/// Loads the image from the specified file path.

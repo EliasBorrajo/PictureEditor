@@ -1,5 +1,4 @@
-﻿using PictureEditor.DAL;
-using System.Drawing.Imaging;
+﻿using System.Drawing.Imaging;
 
 
 namespace PictureEditor.DAL
@@ -7,7 +6,7 @@ namespace PictureEditor.DAL
 	/// <summary>
 	/// Class to handle the input and output of images from a database.
 	/// </summary>
-    internal class OutputInputDatabase : IOutputInput
+	internal class OutputInputDatabase : IOutputInput
 	{
 		/// <summary>
 		/// Not implemented yet.

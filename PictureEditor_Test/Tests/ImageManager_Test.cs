@@ -8,16 +8,16 @@ using System.Drawing.Imaging;
 
 namespace PictureEditor_Test.Tests
 {
-    /// <summary>
-    /// Test class for the ImageManager class.
-    /// 
-    /// The CODE_COVERING uses the real implementation of the IOutputInput interface.
-    /// The SUBSTITUTES use a substitute (mock) of the IOutputInput interface.
-    /// 
-    /// Unit tests should be written using the CODE_COVERING approach.
-    /// Test doubles (substitutes) should be used only when the real implementation of the interface is not available.
-    /// </summary>
-    [TestClass]
+	/// <summary>
+	/// Test class for the ImageManager class.
+	/// 
+	/// The CODE_COVERING uses the real implementation of the IOutputInput interface.
+	/// The SUBSTITUTES use a substitute (mock) of the IOutputInput interface.
+	/// 
+	/// Unit tests should be written using the CODE_COVERING approach.
+	/// Test doubles (substitutes) should be used only when the real implementation of the interface is not available.
+	/// </summary>
+	[TestClass]
 	public class ImageManager_Test
 	{
 
@@ -51,12 +51,12 @@ namespace PictureEditor_Test.Tests
 		public void Save_ShouldReturnFalseWhenError()
 		{
 			// Arrange
-            outputInput
+			outputInput
 				.When(x => x.Save(image, imageName, format))
 				.Do(x => throw new Exception("Some exception message"));
 
-            // Exécutez votre code qui appelle SomeVoidMethod() sur outputInput ici
-            var imageManager = new ImageManager();
+			// Exécutez votre code qui appelle SomeVoidMethod() sur outputInput ici
+			var imageManager = new ImageManager();
 
 			// Act
 			bool result = imageManager.Save(outputInput, image, imageName, format);

@@ -1,9 +1,21 @@
 ﻿
 namespace PictureEditor.BusinessLayer.Interfaces
 {
+	/// <summary>
+	/// Interface for edge detection algorithms.
+	/// </summary>
 	public interface IEdgeDetection
 	{
+		/// <summary>
+		/// Returns a matrix for the specified filter.
+		/// </summary>
+		/// <param name="filterName"></param>
 		double[,] GetFilterMatrix(string filterName);
+
+		/// <summary>
+		/// Returns a list of available filters.
+		/// </summary>
+		/// <returns></returns>
 		IEnumerable<string> GetAvailableAlgorithms();
 
 		/// <summary>

@@ -1,6 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NSubstitute;
-using PictureEditor.BusinessLayer.Interfaces;
 using PictureEditor.BusinessLayer.Managers;
 using PictureEditor.BusinessLayer.Managers.EdgeDetection;
 using System.Drawing;
@@ -11,10 +9,10 @@ namespace PictureEditor_Test.Tests
 	public class EdgeDetectionManager_Test
 	{
 		public static string RessourcesPath = Directory.GetCurrentDirectory() + "\\Ressources";
-		public static string OriginalPath			= RessourcesPath + "\\Original.bmp";
-		public static string LaplacianXYPath	= RessourcesPath + "\\LaplacianXY.bmp";
-		public static string KirschXYPath			= RessourcesPath + "\\KirschXY.bmp";
-		public static string SobelXYPath			= RessourcesPath + "\\SobelXY.bmp";
+		public static string OriginalPath = RessourcesPath + "\\Original.bmp";
+		public static string LaplacianXYPath = RessourcesPath + "\\LaplacianXY.bmp";
+		public static string KirschXYPath = RessourcesPath + "\\KirschXY.bmp";
+		public static string SobelXYPath = RessourcesPath + "\\SobelXY.bmp";
 
 		private EdgeDetectionManager? EdgeDetectionManager;
 
@@ -28,8 +26,8 @@ namespace PictureEditor_Test.Tests
 		public void TestEdgeDetectorAlgo_Laplacian_tolerance150()
 		{
 			// 1) Load images
-			Bitmap ImageReference	= new Bitmap(LaplacianXYPath);
-			Bitmap ImageToDetect	= new Bitmap(OriginalPath);
+			Bitmap ImageReference = new Bitmap(LaplacianXYPath);
+			Bitmap ImageToDetect = new Bitmap(OriginalPath);
 
 			// Get the matrix
 			string xFilterName = "Laplacian";

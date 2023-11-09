@@ -3,6 +3,9 @@
 
 namespace PictureEditor.BusinessLayer.Managers
 {
+	/// <summary>
+	/// Filters manager class for applying filters to images.
+	/// </summary>
 	public class FiltersManager : IFilters
 	{
 
@@ -20,69 +23,6 @@ namespace PictureEditor.BusinessLayer.Managers
 				}
 			return bitmap;
 		}
-
-		//public Bitmap MagicMosaic(Bitmap bitmap)
-		//{
-		//          int numSquaresX = 3;
-		//          int numSquaresY = 3;
-
-		//          int squareWidth = (int)Math.Ceiling((double)bitmap.Width / numSquaresX);
-		//          int squareHeight = (int)Math.Ceiling((double)bitmap.Height / numSquaresY);
-		//          Bitmap temp = new Bitmap(bitmap.Width, bitmap.Height);
-
-		//          for (int i = 0; i < bitmap.Width; i++)
-		//          {
-		//              for (int x = 0; x < bitmap.Height; x++)
-		//              {
-		//                  Color pixel = Color.Black;
-
-		//                  int squareIndexX = i / squareWidth;
-		//                  int squareIndexY = x / squareHeight;
-
-		//                  if (squareIndexX % 2 == 0)
-		//                  {
-		//                      if (squareIndexY % 2 == 0)
-		//                      {
-		//                          pixel = bitmap.GetPixel(i, x);
-		//                      }
-		//                      else
-		//                      {
-		//                          if (x < bitmap.Width && i < bitmap.Height)
-		//                          {
-		//                              pixel = bitmap.GetPixel(x, i);
-		//                          }
-		//                      }
-		//                  }
-		//                  else
-		//                  {
-		//                      if (squareIndexY % 2 == 0)
-		//                      {
-		//                          if (x < bitmap.Width && i < bitmap.Height)
-		//                          {
-		//                              pixel = bitmap.GetPixel(x, i);
-		//                          }
-		//                      }
-		//                      else
-		//                      {
-		//                          int reduceFactor = squareIndexX * squareIndexY + 1;
-		//                          int reducedX = (int)Math.Ceiling((double)x / reduceFactor);
-		//                          int reducedI = (int)Math.Ceiling((double)i / reduceFactor);
-
-		//                          int maxX = bitmap.Width - 1;
-		//                          int maxY = bitmap.Height - 1;
-
-		//                          int clampedX = Math.Min(reducedX, maxX);
-		//                          int clampedI = Math.Min(reducedI, maxY);
-
-		//                          pixel = bitmap.GetPixel(clampedX, clampedI);
-		//                      }
-		//                  }
-
-		//                  temp.SetPixel(i, x, pixel);
-		//              }
-		//          }
-		//          return temp;
-		//      }
 
 		public Bitmap MagicMosaic(Bitmap bitmap)
 		{
@@ -137,7 +77,14 @@ namespace PictureEditor.BusinessLayer.Managers
 			return temp;
 		}
 
-
+		/// <summary>
+		/// Used by MagicMosaic to get the pixel from alternate indices. 
+		/// It is used to get the pixel from the bitmap when the indices are inverted.
+		/// </summary>
+		/// <param name="bitmap"></param>
+		/// <param name="x"></param>
+		/// <param name="i"></param>
+		/// <returns>Returns the pixel from the bitmap at the given indices.</returns>
 		private Color GetPixelFromAlternateIndices(Bitmap bitmap, int x, int i)
 		{
 			int maxX = bitmap.Width - 1;
