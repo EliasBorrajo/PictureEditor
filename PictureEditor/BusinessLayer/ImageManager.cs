@@ -1,12 +1,13 @@
 ﻿using PictureEditor.BusinessLayer.Interfaces;
+using PictureEditor.DAL;
 using System.Drawing.Imaging;
 
 namespace PictureEditor.BusinessLayer
 {
-	/// <summary>
-	/// Represents a class responsible for managing the loading and saving of images.
-	/// </summary>
-	public class ImageManager : IImageManager
+    /// <summary>
+    /// Represents a class responsible for managing the loading and saving of images.
+    /// </summary>
+    public class ImageManager : IImageManager
 	{
 		/// <summary>
 		/// Loads an image using the provided IOutputInput instance and file name.
@@ -29,7 +30,15 @@ namespace PictureEditor.BusinessLayer
 		/// <returns>True if the image is saved successfully; otherwise, false.</returns>
 		public bool Save(IOutputInput outputInput, Image imageToSave, string name, ImageFormat format)
 		{
-			return outputInput.Save(imageToSave, name, format);
+			try
+			{
+				outputInput.Save(imageToSave, name, format);
+				return true;
+			}
+			catch (Exception e)
+			{
+				return false;
+			}
 		}
 	}
 }

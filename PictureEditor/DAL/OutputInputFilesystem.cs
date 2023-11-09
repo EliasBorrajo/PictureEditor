@@ -1,11 +1,11 @@
-﻿using PictureEditor.BusinessLayer.Interfaces; // Importing the interface
+﻿using PictureEditor.DAL;
 
 namespace PictureEditor.Classes
 {
-	/// <summary>
-	/// Represents a class for handling input and output operations related to images.
-	/// </summary>
-	public class OutputInputFilesystem : IOutputInput // Implementing the IOutputInput interface
+    /// <summary>
+    /// Represents a class for handling input and output operations related to images.
+    /// </summary>
+    public class OutputInputFilesystem : IOutputInput // Implementing the IOutputInput interface
 	{
 		/// <summary>
 		/// Loads an image from the specified file path.
@@ -34,19 +34,9 @@ namespace PictureEditor.Classes
 		/// <param name="name">The name or path of the file to save.</param>
 		/// <param name="format">The format in which the image should be saved.</param>
 		/// <returns>True if the image is saved successfully; otherwise, false.</returns>
-		public bool Save(Image imageToSave, string name, System.Drawing.Imaging.ImageFormat format)
+		public void Save(Image imageToSave, string name, System.Drawing.Imaging.ImageFormat format)
 		{
-			try
-			{
-				// Save the image with the specified name and format
-				imageToSave.Save(name, format);
-				return true;
-			}
-			catch (Exception)
-			{
-				// Return false if an exception is thrown during the image save
-				return false;
-			}
+			imageToSave.Save(name, format);
 		}
 	}
 }
