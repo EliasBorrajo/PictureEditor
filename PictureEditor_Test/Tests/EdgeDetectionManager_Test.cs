@@ -16,13 +16,11 @@ namespace PictureEditor_Test.Tests
 		public static string KirschXYPath			= RessourcesPath + "\\KirschXY.bmp";
 		public static string SobelXYPath			= RessourcesPath + "\\SobelXY.bmp";
 
-		private IEdgeDetection? EdgeDetectionSubstitute;
 		private EdgeDetectionManager? EdgeDetectionManager;
 
 		[TestInitialize]
 		public void Initialize()
 		{
-			EdgeDetectionSubstitute = Substitute.For<IEdgeDetection>();
 			EdgeDetectionManager = new EdgeDetectionManager();
 		}
 
@@ -47,8 +45,8 @@ namespace PictureEditor_Test.Tests
 			// 3) Compare the 2 images pixel by pixel to see if they are the same, there is a tolerance of 1 RGB value for each pixel
 			int tolerance = 150;
 			Assert.IsTrue(Util.CompareImages(ImageToDetect, ImageReference, tolerance));
-			// je sais que la couverture du code est remplie,
-			// mais les algos en X et Y sont non déterministes, donc impossible à prédire, il faut une grande tolérance 
+			// I know that the code coverage is complete,
+			// but the algos in X and Y are non-deterministic, so they are impossible to predict. 
 		}
 
 
