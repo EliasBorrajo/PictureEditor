@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
-using PictureEditor.BusinessLayer;
+using PictureEditor.BusinessLayer.Managers;
 using PictureEditor.DAL;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -34,20 +34,10 @@ namespace PictureEditor_Test.Tests
 
 
 		[TestMethod]
-		public void Save_ShouldThrow_NotImplementedException()
-		{
-			outputInput.Save(image, imageName, format).Throws<NotImplementedException>();
-
-			var imageManager = new ImageManager();
-
-			Assert.ThrowsException<NotImplementedException>(() => imageManager.Save(outputInput, image, imageName, format));
-		}
-
-		[TestMethod]
 		public void Save_ShouldReturnTrueWhenImageIsSavedSuccessfully()
 		{
 			// Arrange
-			outputInput.Save(image, imageName, format).Returns(true);
+			// outputInput.Save(image, imageName, format).Returns(true);
 			var imageManager = new ImageManager();
 
 			// Act
@@ -61,8 +51,15 @@ namespace PictureEditor_Test.Tests
 		public void Save_ShouldReturnFalseWhenError()
 		{
 			// Arrange
-			outputInput.Save(image, imageName, format).Returns(false);
-			var imageManager = new ImageManager();
+			//outputInput.Save(image, imageName, format).Returns(false);
+            //var outputInput = Substitute.For<IOutputInput>();
+            outputInput.When(x => x.Save(image, imageName, format)).Do(x => throw new Exception("Some exception message"));
+
+            // Exécutez votre code qui appelle SomeVoidMethod() sur outputInput ici
+
+
+
+            var imageManager = new ImageManager();
 
 			// Act
 			bool result = imageManager.Save(outputInput, image, imageName, format);
@@ -79,6 +76,8 @@ namespace PictureEditor_Test.Tests
 		public void Load_ShouldThrow_NotImplementedException()
 		{
 			outputInput.Load(imageName).Throws<NotImplementedException>();
+
+
 
 			var imageManager = new ImageManager();
 
