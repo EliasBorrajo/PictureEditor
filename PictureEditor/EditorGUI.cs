@@ -9,6 +9,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PictureEditor.BusinessLayer;
+using PictureEditor.BusinessLayer.Classes;
 using PictureEditor.BusinessLayer.Interfaces;
 using PictureEditor.BusinessLayer.Managers;
 using PictureEditor.BusinessLayer.Managers.EdgeDetection;
@@ -26,7 +28,8 @@ namespace PictureEditor
         private Bitmap currentBitmap;               // Bitmap currently being displayed in the picture box
         private Image originalImage;                 // Original image loaded into the picture box (used for resetting)
         private bool edgeDetectionApplied;      // Whether the edge detection has been applied to the image. Can only be applied once.
-        private IOutputInput IOutputInput;          // OutputInput object to handle the input and output of images
+        private IImageManager imageManager;          // OutputInput object to handle the input and output of images
+        private IOutputInput outputInput;          // OutputInput object to handle the input and output of images
         private IEdgeDetection IEdgeDetection;  // EdgeDetection object to handle the edge detection of images
         private IFilters IFilters;                               // Filters object to handle the filters of images
 
@@ -36,7 +39,8 @@ namespace PictureEditor
             InitializeComponent();
 
             // Inject the dependencies
-            IOutputInput = new OutputInputManager();
+            outputInput = new OutputInputFilesystem();
+            imageManager = new ImageManager();
             IEdgeDetection = new EdgeDetectionManager();
             IFilters = new FiltersManager();
         }
@@ -105,7 +109,7 @@ namespace PictureEditor
 					if (openFileDialog.ShowDialog() == DialogResult.OK)
 					{
 						string filePath = openFileDialog.FileName;
-						Image loadedImage = IOutputInput.LoadImage(filePath);
+						Image loadedImage = imageManager.Load(outputInput, filePath);
 
 						if (loadedImage != null)
 						{
@@ -142,7 +146,8 @@ namespace PictureEditor
                             break;
                     }
 
-                    bool success = IOutputInput.SaveImageToFileSystem(pictureBox.Image, saveFileDialog, format);
+                    string filePath = saveFileDialog.FileName;
+                    bool success = imageManager.Save(outputInput, pictureBox.Image, filePath, format);
 
                     if (success)
                     {
