@@ -15,9 +15,9 @@ namespace PictureEditor.BusinessLayer.Managers
 			// Initialisez le dictionnaire avec les noms des algorithmes en tant que clés et les matrices en tant que valeurs. 
 			edgeDetectionMatrices = new Dictionary<string, double[,]>
 			{
-				{ "Laplacian",      Matrix.Laplacian },
-				{ "Sobel",              Matrix.Sobel },
-				{ "Kirsch",             Matrix.Kirsch }
+				{ "Laplacian",			Matrix.Laplacian },
+				{ "Sobel",					Matrix.Sobel },
+				{ "Kirsch",					Matrix.Kirsch }
 			};
 		}
 
@@ -48,12 +48,7 @@ namespace PictureEditor.BusinessLayer.Managers
 		/// <param name="yfilter">Nom du filtre Y.</param>
 		public Bitmap detectPictureEdges(Bitmap inputCurrentBitmap, double[,] xFilterMatrix, double[,] yFilterMatrix)
 		{
-			if (inputCurrentBitmap.Size.Height == 0 || inputCurrentBitmap.Size.Width == 0)
-			{
-				// If the image is empty, then return it simply
-				return new Bitmap(inputCurrentBitmap);
-			}
-
+			
 			// Crée une copie de l'image dans un format modifiable.
 			Bitmap newbitmap = new Bitmap(inputCurrentBitmap);
 			BitmapData newbitmapData = new BitmapData();
@@ -117,23 +112,13 @@ namespace PictureEditor.BusinessLayer.Managers
 						}
 					}
 					double blueTotal = 0;
-					double greenTotal = Math.Sqrt((greenX * greenX) + (greenY * greenY));
+					double greenTotal = Math.Sqrt((greenX * greenX) + (greenY * greenY)); // A square root will never be less than zero
 					double redTotal = 0;
 
-					if (blueTotal > 255)
-					{ blueTotal = 255; }
-					else if (blueTotal < 0)
-					{ blueTotal = 0; }
-
 					if (greenTotal > 255)
-					{ greenTotal = 255; }
-					else if (greenTotal < 0)
-					{ greenTotal = 0; }
-
-					if (redTotal > 255)
-					{ redTotal = 255; }
-					else if (redTotal < 0)
-					{ redTotal = 0; }
+					{ 
+						greenTotal = 255; 
+					}
 
 					resultbuff[byteOffset] = (byte)(blueTotal);
 					resultbuff[byteOffset + 1] = (byte)(greenTotal);

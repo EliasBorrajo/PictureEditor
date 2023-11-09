@@ -1,7 +1,6 @@
 ﻿using PictureEditor.BusinessLayer;
 using PictureEditor.BusinessLayer.Interfaces;
 using PictureEditor.BusinessLayer.Managers;
-using PictureEditor.Classes;
 using PictureEditor.DAL;
 
 namespace PictureEditor

@@ -1,6 +1,6 @@
 ﻿using PictureEditor.DAL;
 
-namespace PictureEditor.Classes
+namespace PictureEditor.DAL
 {
     /// <summary>
     /// Represents a class for handling input and output operations related to images.

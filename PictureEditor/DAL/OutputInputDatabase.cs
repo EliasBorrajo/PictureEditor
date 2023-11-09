@@ -2,7 +2,7 @@
 using System.Drawing.Imaging;
 
 
-namespace PictureEditor.Classes
+namespace PictureEditor.DAL
 {
     internal class OutputInputDatabase : IOutputInput
 	{

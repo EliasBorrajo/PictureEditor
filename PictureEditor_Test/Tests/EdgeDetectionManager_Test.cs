@@ -115,5 +115,45 @@ namespace PictureEditor_Test.Tests
 			Assert.IsTrue(algorithms.Any());
 		}
 
+
+		[TestMethod]
+		public void Laplacian_ShouldReturnCorrectMatrix()
+		{
+			double[,] expected = {
+				  { -1, -1, -1,  },
+				  { -1,  8, -1,  },
+				  { -1, -1, -1,  }
+			};
+
+			// Vérifie que la matrice Laplacian3x3 correspond à la matrice attendue.
+			CollectionAssert.AreEqual(expected, Matrix.Laplacian);
+		}
+
+		[TestMethod]
+		public void Kirsch_ShouldReturnCorrectMatrix()
+		{
+			double[,] expected = {
+				  {  5,  5,  5, },
+				  { -3,  0, -3, },
+				  { -3, -3, -3, }
+			};
+
+			// Vérifie que la matrice Laplacian3x3 correspond à la matrice attendue.
+			CollectionAssert.AreEqual(expected, Matrix.Kirsch);
+		}
+
+		[TestMethod]
+		public void Sobel_ShouldReturnCorrectMatrix()
+		{
+			double[,] expected = {
+				  { -1,  0,  1, },
+				  { -2,  0,  2, },
+				  { -1,  0,  1, }
+			};
+
+			// Vérifie que la matrice Laplacian3x3 correspond à la matrice attendue.
+			CollectionAssert.AreEqual(expected, Matrix.Sobel);
+		}
+
 	}
 }
