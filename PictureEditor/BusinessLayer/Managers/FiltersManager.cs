@@ -23,54 +23,66 @@ namespace PictureEditor.BusinessLayer.Managers
 
 		public Bitmap MagicMosaic(Bitmap bitmap)
 		{
-			int razX = Convert.ToInt32(bitmap.Width / 3);
-			int razY = Convert.ToInt32(bitmap.Height / 3);
-			Bitmap temp = new Bitmap(bitmap.Width, bitmap.Height);
+            int numSquaresX = 3;
+            int numSquaresY = 3;
 
-			for (int i = 0; i < bitmap.Width - 1; i++)
-			{
-				for (int x = 0; x < bitmap.Height - 1; x++)
-				{
-					if (i < razX && x < razY)
-					{
-						temp.SetPixel(i, x, bitmap.GetPixel(i, x));
-					}
-					else if (i < (razX * 2) && x < (razY))
-					{
-						temp.SetPixel(i, x, bitmap.GetPixel(x, i));
-					}
-					else if (i < (razX * 3) && x < (razY))
-					{
-						temp.SetPixel(i, x, bitmap.GetPixel(i, x));
-					}
-					else if (i < (razX) && x < (razY * 2))
-					{
-						temp.SetPixel(i, x, bitmap.GetPixel(x, i));
-					}
-					else if (i < (razX) && x < (razY * 3))
-					{
-						temp.SetPixel(i, x, bitmap.GetPixel(i, x));
-					}
-					else if (i < (razX * 2) && x < (razY * 2))
-					{
-						temp.SetPixel(i, x, bitmap.GetPixel(i, x));
-					}
-					else if (i < (razX * 4) && x < (razY * 1))
-					{
-						temp.SetPixel(i, x, bitmap.GetPixel(i, x));
-					}
-					else if (i < (razX * 4) && x < (razY * 2))
-					{
-						temp.SetPixel(i, x, bitmap.GetPixel(x / 2, i / 2));
-					}
-					else if (i < (razX * 4) && x < (razY * 3))
-					{
-						temp.SetPixel(i, x, bitmap.GetPixel(x / 3, i / 3));
-					}
-				}
-			}
-			return temp;
-		}
+            int squareWidth = (int)Math.Ceiling((double)bitmap.Width / numSquaresX);
+            int squareHeight = (int)Math.Ceiling((double)bitmap.Height / numSquaresY);
+            Bitmap temp = new Bitmap(bitmap.Width, bitmap.Height);
+
+            for (int i = 0; i < bitmap.Width; i++)
+            {
+                for (int x = 0; x < bitmap.Height; x++)
+                {
+                    Color pixel = Color.Black;
+
+                    int squareIndexX = i / squareWidth;
+                    int squareIndexY = x / squareHeight;
+
+                    if (squareIndexX % 2 == 0)
+                    {
+                        if (squareIndexY % 2 == 0)
+                        {
+                            pixel = bitmap.GetPixel(i, x);
+                        }
+                        else
+                        {
+                            if (x < bitmap.Width && i < bitmap.Height)
+                            {
+                                pixel = bitmap.GetPixel(x, i);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (squareIndexY % 2 == 0)
+                        {
+                            if (x < bitmap.Width && i < bitmap.Height)
+                            {
+                                pixel = bitmap.GetPixel(x, i);
+                            }
+                        }
+                        else
+                        {
+                            int reduceFactor = squareIndexX * squareIndexY + 1;
+                            int reducedX = (int)Math.Ceiling((double)x / reduceFactor);
+                            int reducedI = (int)Math.Ceiling((double)i / reduceFactor);
+
+                            int maxX = bitmap.Width - 1;
+                            int maxY = bitmap.Height - 1;
+
+                            int clampedX = Math.Min(reducedX, maxX);
+                            int clampedI = Math.Min(reducedI, maxY);
+
+                            pixel = bitmap.GetPixel(clampedX, clampedI);
+                        }
+                    }
+
+                    temp.SetPixel(i, x, pixel);
+                }
+            }
+            return temp;
+        }
 
 		public Bitmap Swap(Bitmap bitmap)
 		{
