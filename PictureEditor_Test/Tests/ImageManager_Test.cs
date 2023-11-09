@@ -3,44 +3,42 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using PictureEditor.BusinessLayer;
 using PictureEditor.BusinessLayer.Interfaces;
-using PictureEditor.BusinessLayer.Managers;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Windows.Forms;
 
 namespace PictureEditor_Test.Tests
 {
-    /// <summary>
-    /// Test class for the ImageManager class.
-    /// 
-    /// The CODE_COVERING uses the real implementation of the IOutputInput interface.
-    /// The SUBSTITUTES use a substitute (mock) of the IOutputInput interface.
-    /// 
-    /// Unit tests should be written using the CODE_COVERING approach.
-    /// Test doubles (substitutes) should be used only when the real implementation of the interface is not available.
-    /// </summary>
-    [TestClass]
-    public class ImageManager_Test
-    {
+	/// <summary>
+	/// Test class for the ImageManager class.
+	/// 
+	/// The CODE_COVERING uses the real implementation of the IOutputInput interface.
+	/// The SUBSTITUTES use a substitute (mock) of the IOutputInput interface.
+	/// 
+	/// Unit tests should be written using the CODE_COVERING approach.
+	/// Test doubles (substitutes) should be used only when the real implementation of the interface is not available.
+	/// </summary>
+	[TestClass]
+	public class ImageManager_Test
+	{
 
-        private IOutputInput? outputInput;
+		private IOutputInput? outputInput;
 		private Image image = new Bitmap(10, 10); // Sample image;
-        private string imageName = "test.png";
-        private ImageFormat format = ImageFormat.Png;
+		private string imageName = "test.png";
+		private ImageFormat format = ImageFormat.Png;
 
-        [TestInitialize]
-        public void Initialize()
-        {
-            outputInput = Substitute.For<IOutputInput>();
-        }
+		[TestInitialize]
+		public void Initialize()
+		{
+			outputInput = Substitute.For<IOutputInput>();
+		}
 
 
-        [TestMethod]
+		[TestMethod]
 		public void Save_ShouldThrow_NotImplementedException()
 		{
 			outputInput.Save(image, imageName, format).Throws<NotImplementedException>();
 
-            var imageManager = new ImageManager();
+			var imageManager = new ImageManager();
 
 			Assert.ThrowsException<NotImplementedException>(() => imageManager.Save(outputInput, image, imageName, format));
 		}
@@ -48,12 +46,12 @@ namespace PictureEditor_Test.Tests
 		[TestMethod]
 		public void Save_ShouldReturnTrueWhenImageIsSavedSuccessfully()
 		{
-            // Arrange
-            outputInput.Save(image, imageName, format).Returns(true);
-            var imageManager = new ImageManager();
+			// Arrange
+			outputInput.Save(image, imageName, format).Returns(true);
+			var imageManager = new ImageManager();
 
-            // Act
-            bool result = imageManager.Save(outputInput, image, imageName, format);
+			// Act
+			bool result = imageManager.Save(outputInput, image, imageName, format);
 
 			// Assert
 			Assert.IsTrue(result);
@@ -62,43 +60,43 @@ namespace PictureEditor_Test.Tests
 		[TestMethod]
 		public void Save_ShouldReturnFalseWhenError()
 		{
-            // Arrange
-            outputInput.Save(image, imageName, format).Returns(false);
-            var imageManager = new ImageManager();
+			// Arrange
+			outputInput.Save(image, imageName, format).Returns(false);
+			var imageManager = new ImageManager();
 
-            // Act
-            bool result = imageManager.Save(outputInput, image, imageName, format);
+			// Act
+			bool result = imageManager.Save(outputInput, image, imageName, format);
 
-            // Assert
-            Assert.IsFalse(result);
+			// Assert
+			Assert.IsFalse(result);
 		}
 
 
 
 
 
-        [TestMethod]
-        public void Load_ShouldThrow_NotImplementedException()
-        {
-            outputInput.Load(imageName).Throws<NotImplementedException>();
+		[TestMethod]
+		public void Load_ShouldThrow_NotImplementedException()
+		{
+			outputInput.Load(imageName).Throws<NotImplementedException>();
 
-            var imageManager = new ImageManager();
+			var imageManager = new ImageManager();
 
-            Assert.ThrowsException<NotImplementedException>(() => imageManager.Load(outputInput, imageName));
-        }
+			Assert.ThrowsException<NotImplementedException>(() => imageManager.Load(outputInput, imageName));
+		}
 
 
-        [TestMethod]
-        public void Load_ShouldReturnImage()
-        {
-            outputInput.Load(imageName).Returns(image);
+		[TestMethod]
+		public void Load_ShouldReturnImage()
+		{
+			outputInput.Load(imageName).Returns(image);
 
-            var imageManager = new ImageManager();
-            var result = imageManager.Load(outputInput, imageName);
+			var imageManager = new ImageManager();
+			var result = imageManager.Load(outputInput, imageName);
 
-            Assert.IsInstanceOfType<Image>(result, "L'objet n'est pas du type image.");
-        }
-    }
+			Assert.IsInstanceOfType<Image>(result, "L'objet n'est pas du type image.");
+		}
+	}
 
 }
 

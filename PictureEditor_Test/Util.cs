@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace PictureEditor_Test
 {
@@ -59,7 +54,7 @@ namespace PictureEditor_Test
 		public static bool AreMatricesEqual(double[,] expected, double[,] actual)
 		{
 			// Check if the matrices have the same dimensions 
-			if (expected.GetLength(0) != actual.GetLength(0) || 
+			if (expected.GetLength(0) != actual.GetLength(0) ||
 				expected.GetLength(1) != actual.GetLength(1))
 			{
 				return false;

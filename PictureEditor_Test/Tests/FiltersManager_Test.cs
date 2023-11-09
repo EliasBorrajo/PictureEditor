@@ -2,26 +2,21 @@
 using NSubstitute;
 using PictureEditor.BusinessLayer.Interfaces;
 using PictureEditor.BusinessLayer.Managers;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PictureEditor_Test.Tests
 {
-    [TestClass]
-    public class FiltersManager_Test
-    {
-		public static string RessourcesPath		= Directory.GetCurrentDirectory() + "\\Ressources";
-		public static string OriginalPath			= RessourcesPath + "\\Original.bmp";
-		public static string BlackWhitePath		= RessourcesPath + "\\BlackAndWhite.bmp";
-		public static string SwapPath				= RessourcesPath + "\\Swap.bmp";
-		public static string MagicPath				= RessourcesPath + "\\Magic.bmp";
+	[TestClass]
+	public class FiltersManager_Test
+	{
+		public static string RessourcesPath = Directory.GetCurrentDirectory() + "\\Ressources";
+		public static string OriginalPath = RessourcesPath + "\\Original.bmp";
+		public static string BlackWhitePath = RessourcesPath + "\\BlackAndWhite.bmp";
+		public static string SwapPath = RessourcesPath + "\\Swap.bmp";
+		public static string MagicPath = RessourcesPath + "\\Magic.bmp";
 
-		private IFilters?				 FiltersSubstitute;
-		private FiltersManager?	 FiltersManager;
+		private IFilters? FiltersSubstitute;
+		private FiltersManager? FiltersManager;
 
 		[TestInitialize]
 		public void Initialize()
@@ -53,8 +48,8 @@ namespace PictureEditor_Test.Tests
 		public void TestFilterBlackAndWhite()
 		{
 			// 1) Load images
-			Bitmap ImageReference	= new Bitmap(BlackWhitePath);         // 1) Load the image with the filter already applied
-			Bitmap imageToFilter		= new Bitmap(OriginalPath);                        // 2) Load the original image to modify and then compare with the other image
+			Bitmap ImageReference = new Bitmap(BlackWhitePath);         // 1) Load the image with the filter already applied
+			Bitmap imageToFilter = new Bitmap(OriginalPath);                        // 2) Load the original image to modify and then compare with the other image
 
 			// 2) Apply the filter
 
@@ -70,7 +65,7 @@ namespace PictureEditor_Test.Tests
 		{
 			// 1) Load images
 			Bitmap ImageReference = new Bitmap(SwapPath);         // 1) Load the image with the filter already applied
-			Bitmap imageToFilter		= new Bitmap(OriginalPath);                        // 2) Load the original image to modify and then compare with the other image
+			Bitmap imageToFilter = new Bitmap(OriginalPath);                        // 2) Load the original image to modify and then compare with the other image
 
 			// 2) Apply the filter
 
@@ -85,8 +80,8 @@ namespace PictureEditor_Test.Tests
 		public void TestFilterMagic_ShouldApplyMagicEffect()
 		{
 			// 1) Load images
-			Bitmap ImageReference	= new Bitmap(MagicPath);         // 1) Load the image with the filter already applied
-			Bitmap imageToFilter		= new Bitmap(OriginalPath);                        // 2) Load the original image to modify and then compare with the other image
+			Bitmap ImageReference = new Bitmap(MagicPath);         // 1) Load the image with the filter already applied
+			Bitmap imageToFilter = new Bitmap(OriginalPath);                        // 2) Load the original image to modify and then compare with the other image
 
 			// 2) Apply the filter
 

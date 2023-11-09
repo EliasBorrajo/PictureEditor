@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using PictureEditor.BusinessLayer.Interfaces;
 using PictureEditor.BusinessLayer.Managers;
 using PictureEditor.BusinessLayer.Managers.EdgeDetection;
+using System.Drawing;
 
 namespace PictureEditor_Test.Tests
 {
@@ -16,10 +11,10 @@ namespace PictureEditor_Test.Tests
 	public class EdgeDetectionManager_Test
 	{
 		public static string RessourcesPath = Directory.GetCurrentDirectory() + "\\Ressources";
-		public static string OriginalPath			= RessourcesPath + "\\Original.bmp";
-		public static string LaplacianXYPath	= RessourcesPath + "\\LaplacianXY.bmp";
-		public static string KirschXYPath			= RessourcesPath + "\\KirschXY.bmp";
-		public static string SobelXYPath			= RessourcesPath + "\\SobelXY.bmp";
+		public static string OriginalPath = RessourcesPath + "\\Original.bmp";
+		public static string LaplacianXYPath = RessourcesPath + "\\LaplacianXY.bmp";
+		public static string KirschXYPath = RessourcesPath + "\\KirschXY.bmp";
+		public static string SobelXYPath = RessourcesPath + "\\SobelXY.bmp";
 
 		private IEdgeDetection? EdgeDetectionSubstitute;
 		private EdgeDetectionManager EdgeDetectionManager;
@@ -60,8 +55,8 @@ namespace PictureEditor_Test.Tests
 		public void TestEdgeDetectorAlgo_Laplacian()
 		{
 			// 1) Load images
-			Bitmap ImageReference	= new Bitmap(LaplacianXYPath);         
-			Bitmap ImageToDetect	= new Bitmap(OriginalPath);               
+			Bitmap ImageReference = new Bitmap(LaplacianXYPath);
+			Bitmap ImageToDetect = new Bitmap(OriginalPath);
 
 			// Get the matrix
 			string xFilterName = "Laplacian";
@@ -106,7 +101,7 @@ namespace PictureEditor_Test.Tests
 			// Assert
 			Assert.IsNotNull(result);
 			// Add additional assertions to validate the correctness of the returned matrix
-			Assert.IsTrue(Util.AreMatricesEqual( Matrix.Sobel, result));
+			Assert.IsTrue(Util.AreMatricesEqual(Matrix.Sobel, result));
 		}
 
 		[TestMethod]

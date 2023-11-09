@@ -1,9 +1,9 @@
 ﻿
 namespace PictureEditor.BusinessLayer.Interfaces
 {
-    public interface IEdgeDetection
-    {
-        double[,] GetFilterMatrix(string filterName);
+	public interface IEdgeDetection
+	{
+		double[,] GetFilterMatrix(string filterName);
 		IEnumerable<string> GetAvailableAlgorithms();
 
 		/// <summary>

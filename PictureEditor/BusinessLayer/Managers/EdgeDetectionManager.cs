@@ -15,9 +15,9 @@ namespace PictureEditor.BusinessLayer.Managers
 			// Initialisez le dictionnaire avec les noms des algorithmes en tant que clés et les matrices en tant que valeurs. 
 			edgeDetectionMatrices = new Dictionary<string, double[,]>
 			{
-				{ "Laplacian",		Matrix.Laplacian },
-				{ "Sobel",				Matrix.Sobel },
-				{ "Kirsch",				Matrix.Kirsch }
+				{ "Laplacian",      Matrix.Laplacian },
+				{ "Sobel",              Matrix.Sobel },
+				{ "Kirsch",             Matrix.Kirsch }
 			};
 		}
 
@@ -48,10 +48,11 @@ namespace PictureEditor.BusinessLayer.Managers
 		/// <param name="yfilter">Nom du filtre Y.</param>
 		public Bitmap detectPictureEdges(Bitmap inputCurrentBitmap, double[,] xFilterMatrix, double[,] yFilterMatrix)
 		{
-			if (inputCurrentBitmap.Size.Height == 0 || inputCurrentBitmap.Size.Width == 0) {
+			if (inputCurrentBitmap.Size.Height == 0 || inputCurrentBitmap.Size.Width == 0)
+			{
 				// If the image is empty, then return it simply
 				return new Bitmap(inputCurrentBitmap);
-            }
+			}
 
 			// Crée une copie de l'image dans un format modifiable.
 			Bitmap newbitmap = new Bitmap(inputCurrentBitmap);
@@ -63,34 +64,34 @@ namespace PictureEditor.BusinessLayer.Managers
 
 			Marshal.Copy(newbitmapData.Scan0, pixelbuff, 0, pixelbuff.Length);
 			newbitmap.UnlockBits(newbitmapData);
-            int filterOffset = 1;
-            for (int offsetY = filterOffset; offsetY <
+			int filterOffset = 1;
+			for (int offsetY = filterOffset; offsetY <
 				newbitmap.Height - filterOffset; offsetY++)
 			{
 				for (int offsetX = filterOffset; offsetX <
 					newbitmap.Width - filterOffset; offsetX++)
 				{
-                    double greenX;
-                    double redX;
-                    double blueX = greenX = redX = 0;
-                    double greenY;
-                    double redY;
-                    double blueY = greenY = redY = 0;
-                    int byteOffset = offsetY *
-                    newbitmapData.Stride +
-                    offsetX * 4;
+					double greenX;
+					double redX;
+					double blueX = greenX = redX = 0;
+					double greenY;
+					double redY;
+					double blueY = greenY = redY = 0;
+					int byteOffset = offsetY *
+					newbitmapData.Stride +
+					offsetX * 4;
 
-                    for (int filterY = -filterOffset;
+					for (int filterY = -filterOffset;
 						filterY <= filterOffset; filterY++)
 					{
 						for (int filterX = -filterOffset;
 							filterX <= filterOffset; filterX++)
 						{
-                            int calcOffset = byteOffset +
-                            (filterX * 4) +
-                            (filterY * newbitmapData.Stride);
+							int calcOffset = byteOffset +
+							(filterX * 4) +
+							(filterY * newbitmapData.Stride);
 
-                            blueX += pixelbuff[calcOffset] *
+							blueX += pixelbuff[calcOffset] *
 										xFilterMatrix[filterY + filterOffset,
 												filterX + filterOffset];
 
@@ -115,11 +116,11 @@ namespace PictureEditor.BusinessLayer.Managers
 												filterX + filterOffset];
 						}
 					}
-                    double blueTotal = 0;
-                    double greenTotal = Math.Sqrt((greenX * greenX) + (greenY * greenY));
-                    double redTotal = 0;
+					double blueTotal = 0;
+					double greenTotal = Math.Sqrt((greenX * greenX) + (greenY * greenY));
+					double redTotal = 0;
 
-                    if (blueTotal > 255)
+					if (blueTotal > 255)
 					{ blueTotal = 255; }
 					else if (blueTotal < 0)
 					{ blueTotal = 0; }
