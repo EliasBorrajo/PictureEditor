@@ -3,15 +3,16 @@
 namespace PictureEditor.DAL
 {
     /// <summary>
-    /// Represents a class for handling input and output operations related to images.
+    /// Class to handle the input and output of images from the filesystem.
     /// </summary>
     public class OutputInputFilesystem : IOutputInput // Implementing the IOutputInput interface
 	{
 		/// <summary>
-		/// Loads an image from the specified file path.
+		/// Loads the image from the specified file path.
 		/// </summary>
-		/// <param name="filePath">The path of the file from which to load the image.</param>
-		/// <returns>The loaded Image object.</returns>
+		/// <param name="filePath"></param>
+		/// <returns>The loaded image.</returns>
+		/// <exception cref="Exception"></exception>
 		public Image Load(string filePath)
 		{
 			try
