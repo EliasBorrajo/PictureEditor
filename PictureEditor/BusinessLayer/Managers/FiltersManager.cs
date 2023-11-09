@@ -21,68 +21,134 @@ namespace PictureEditor.BusinessLayer.Managers
 			return bitmap;
 		}
 
+		//public Bitmap MagicMosaic(Bitmap bitmap)
+		//{
+		//          int numSquaresX = 3;
+		//          int numSquaresY = 3;
+
+		//          int squareWidth = (int)Math.Ceiling((double)bitmap.Width / numSquaresX);
+		//          int squareHeight = (int)Math.Ceiling((double)bitmap.Height / numSquaresY);
+		//          Bitmap temp = new Bitmap(bitmap.Width, bitmap.Height);
+
+		//          for (int i = 0; i < bitmap.Width; i++)
+		//          {
+		//              for (int x = 0; x < bitmap.Height; x++)
+		//              {
+		//                  Color pixel = Color.Black;
+
+		//                  int squareIndexX = i / squareWidth;
+		//                  int squareIndexY = x / squareHeight;
+
+		//                  if (squareIndexX % 2 == 0)
+		//                  {
+		//                      if (squareIndexY % 2 == 0)
+		//                      {
+		//                          pixel = bitmap.GetPixel(i, x);
+		//                      }
+		//                      else
+		//                      {
+		//                          if (x < bitmap.Width && i < bitmap.Height)
+		//                          {
+		//                              pixel = bitmap.GetPixel(x, i);
+		//                          }
+		//                      }
+		//                  }
+		//                  else
+		//                  {
+		//                      if (squareIndexY % 2 == 0)
+		//                      {
+		//                          if (x < bitmap.Width && i < bitmap.Height)
+		//                          {
+		//                              pixel = bitmap.GetPixel(x, i);
+		//                          }
+		//                      }
+		//                      else
+		//                      {
+		//                          int reduceFactor = squareIndexX * squareIndexY + 1;
+		//                          int reducedX = (int)Math.Ceiling((double)x / reduceFactor);
+		//                          int reducedI = (int)Math.Ceiling((double)i / reduceFactor);
+
+		//                          int maxX = bitmap.Width - 1;
+		//                          int maxY = bitmap.Height - 1;
+
+		//                          int clampedX = Math.Min(reducedX, maxX);
+		//                          int clampedI = Math.Min(reducedI, maxY);
+
+		//                          pixel = bitmap.GetPixel(clampedX, clampedI);
+		//                      }
+		//                  }
+
+		//                  temp.SetPixel(i, x, pixel);
+		//              }
+		//          }
+		//          return temp;
+		//      }
+
 		public Bitmap MagicMosaic(Bitmap bitmap)
 		{
-            int numSquaresX = 3;
-            int numSquaresY = 3;
+			int numSquaresX = 3;
+			int numSquaresY = 3;
 
-            int squareWidth = (int)Math.Ceiling((double)bitmap.Width / numSquaresX);
-            int squareHeight = (int)Math.Ceiling((double)bitmap.Height / numSquaresY);
-            Bitmap temp = new Bitmap(bitmap.Width, bitmap.Height);
+			int squareWidth = (int)Math.Ceiling((double)bitmap.Width / numSquaresX);
+			int squareHeight = (int)Math.Ceiling((double)bitmap.Height / numSquaresY);
+			Bitmap temp = new Bitmap(bitmap.Width, bitmap.Height);
 
-            for (int i = 0; i < bitmap.Width; i++)
-            {
-                for (int x = 0; x < bitmap.Height; x++)
-                {
-                    Color pixel = Color.Black;
+			for (int i = 0; i < bitmap.Width; i++)
+			{
+				for (int x = 0; x < bitmap.Height; x++)
+				{
+					Color pixel = Color.Black;
 
-                    int squareIndexX = i / squareWidth;
-                    int squareIndexY = x / squareHeight;
+					// Calcule les indices des carrés en fonction des coordonnées actuelles
+					int squareIndexX = i / squareWidth;
+					int squareIndexY = x / squareHeight;
 
-                    if (squareIndexX % 2 == 0)
-                    {
-                        if (squareIndexY % 2 == 0)
-                        {
-                            pixel = bitmap.GetPixel(i, x);
-                        }
-                        else
-                        {
-                            if (x < bitmap.Width && i < bitmap.Height)
-                            {
-                                pixel = bitmap.GetPixel(x, i);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (squareIndexY % 2 == 0)
-                        {
-                            if (x < bitmap.Width && i < bitmap.Height)
-                            {
-                                pixel = bitmap.GetPixel(x, i);
-                            }
-                        }
-                        else
-                        {
-                            int reduceFactor = squareIndexX * squareIndexY + 1;
-                            int reducedX = (int)Math.Ceiling((double)x / reduceFactor);
-                            int reducedI = (int)Math.Ceiling((double)i / reduceFactor);
+					// Sélectionne le pixel en fonction des indices des carrés
+					if (squareIndexX % 2 == 0)
+					{
+						if (squareIndexY % 2 == 0)
+						{
+							pixel = bitmap.GetPixel(i, x);
+						}
+						else
+						{
+							pixel = GetPixelFromAlternateIndices(bitmap, x, i);
+						}
+					}
+					else
+					{
+						if (squareIndexY % 2 == 0)
+						{
+							pixel = GetPixelFromAlternateIndices(bitmap, x, i);
+						}
+						else
+						{
+							int reduceFactor = squareIndexX * squareIndexY + 1;
+							int reducedX = Math.Min(bitmap.Width - 1, (int)Math.Ceiling((double)x / reduceFactor));
+							int reducedI = Math.Min(bitmap.Height - 1, (int)Math.Ceiling((double)i / reduceFactor));
 
-                            int maxX = bitmap.Width - 1;
-                            int maxY = bitmap.Height - 1;
+							pixel = bitmap.GetPixel(reducedX, reducedI);
+						}
+					}
 
-                            int clampedX = Math.Min(reducedX, maxX);
-                            int clampedI = Math.Min(reducedI, maxY);
+					temp.SetPixel(i, x, pixel);
+				}
+			}
+			return temp;
+		}
 
-                            pixel = bitmap.GetPixel(clampedX, clampedI);
-                        }
-                    }
 
-                    temp.SetPixel(i, x, pixel);
-                }
-            }
-            return temp;
-        }
+		private Color GetPixelFromAlternateIndices(Bitmap bitmap, int x, int i)
+		{
+			int maxX = bitmap.Width - 1;
+			int maxY = bitmap.Height - 1;
+
+			int clampedX = Math.Min(maxX, x);
+			int clampedI = Math.Min(maxY, i);
+
+			return bitmap.GetPixel(clampedX, clampedI);
+		}
+
 
 		public Bitmap Swap(Bitmap bitmap)
 		{

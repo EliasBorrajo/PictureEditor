@@ -26,20 +26,6 @@ namespace PictureEditor_Test.Tests
 		}
 
 
-		[TestMethod]
-		public void TestMethod1()
-		{
-			//1)  Pour tester les filtres, 2 filtres à tester, il faut dabord le faire manuellement, sauver l'image fait manuellement, la mettre dans le dossier ressources
-			// et dans les paramètres -> (propriétés > Toujours copier !).
-			// Ensuite le test doit refaire mon truc manuel, et comparer mes 2 imgages pixel par pixel.
-
-			// 2) Pour faire ça avec les algos, same avec 3 algos
-
-			// Pour ces 5 trucs à tester, je dois couvrir le 100% de code coverage
-
-
-		}
-
 		/// <summary>
 		/// Test the filter "BlackWhite" with the original image. 
 		/// The filter "BlackWhite" is applied to the original image and then compared pixel by pixel with the image already modified.
