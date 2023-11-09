@@ -51,14 +51,11 @@ namespace PictureEditor_Test.Tests
 		public void Save_ShouldReturnFalseWhenError()
 		{
 			// Arrange
-			//outputInput.Save(image, imageName, format).Returns(false);
-            //var outputInput = Substitute.For<IOutputInput>();
-            outputInput.When(x => x.Save(image, imageName, format)).Do(x => throw new Exception("Some exception message"));
+            outputInput
+				.When(x => x.Save(image, imageName, format))
+				.Do(x => throw new Exception("Some exception message"));
 
             // Exécutez votre code qui appelle SomeVoidMethod() sur outputInput ici
-
-
-
             var imageManager = new ImageManager();
 
 			// Act
