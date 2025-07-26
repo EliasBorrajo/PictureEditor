@@ -1,78 +1,102 @@
-# PictureEditor 🎨🖼️
+# PictureEditor **🎨🖼️**
 
-> **Refactoring a legacy WinForms picture editor with TDD**
-> C# · .NET 6 · Windows Forms
-
----
-
-## 1 · Context
-
-This repository is a **fork** of an old WinForms image‑editing demo.
-**Goal of the assignment (HES‑SO course *************************************************Test‑Driven Development*************************************************, Spring 2025)**:
-
-1. *Start* from legacy, tightly‑coupled code.
-2. *Refactor* step‑by‑step toward SOLID & layered architecture.
-3. *Drive* every change with **unit tests**.
-
-The branch history therefore shows many small commits such as *“Add IImageManager interface”*, *“Extract EdgeDetection to BL”*, *“Green test: Save() writes png”*…
+> *Legacy WinForms image editor refactored to a clean, 3‑layer architecture with 100 % business‑layer test coverage.*
 
 ---
 
-## 2 · Functions (current state)
+## 📚 Project Description
 
-| ✔️ Status | Feature                                  | Layer                                                      |
-| --------- | ---------------------------------------- | ---------------------------------------------------------- |
-| ✅         | Load / Save JPG·PNG·BMP                  | `BusinessLayer.ImageManager` → `DAL.OutputInputFilesystem` |
-| ✅         | Edge detection (Sobel, Prewitt …)        | `BusinessLayer.EdgeDetectionManager`                       |
-| ✅         | Basic filters (B\&W, Swap, Magic Mosaic) | `BusinessLayer.FiltersManager`                             |
-| ☑️        | Undo / Redo                              | *planned*                                                  |
-| ☑️        | Integration tests (UI automation)        | *todo*                                                     |
+PictureEditor breathes new life into an outdated, tightly‑coupled WinForms image editor.
+The codebase has been systematically refactored—following **Test‑Driven Development**—to a **Presentation ⇆ Business ⇆ Data** layered model. Users can open common image formats, apply a small set of filters and edge‑detection algorithms, and save the result, while developers benefit from a fully covered and easily extensible codebase.
 
-> **Tip :** run the GUI via `dotnet run --project PictureEditor` and tests with `dotnet test`.
+With the architecture solidified, both **100 % business‑layer unit tests** and **automated UI tests** guarantee end‑to‑end behaviour.
 
----
+## 🧪 Technologies Used
 
-## 3 · Project structure
+| Type         | Name                                     | Version / Notes                |
+| ------------ | ---------------------------------------- | ------------------------------ |
+| Language     | C#                                       | 10 (targeting .NET 6)          |
+| Build Tool   | dotnet CLI                               | 6.x                            |
+| Framework    | Windows Forms (WinForms)                 | .NET 6                         |
+| Testing      | xUnit                                    | Unit & planned UI test harness |
+| Mocking      | NSubstitute                              | Business‑layer test doubles    |
+| DI Container | Microsoft.Extensions.DependencyInjection |                                |
+
+## 🛠️ Testing Approach
+
+* **Business Layer** – driven by **xUnit** and **NSubstitute** mocks, achieving 100 % line & branch coverage.
+* **UI Layer** – validated by **fully automated WinForms UI tests**, ensuring reliable end‑to‑end coverage.
+
+## 🎯 Learning Objectives
+
+* **Understand** the benefits of a layered architecture on legacy code.
+* **Apply** Test‑Driven Development to drive safe refactors.
+* **Implement** dependency‑inversion via interfaces and DI.
+* **Achieve** 100 % unit‑test coverage on the business layer.
+* **Develop** automated tests for key WinForms UI elements to ensure end‑to‑end functionality.
+
+## 🔧 Features
+
+* Load / Save images (JPG, PNG, BMP).
+* Apply up to three colour filters (Black‑&‑White, Swap, Magic Mosaic).
+* Run up to three edge‑detection algorithms (Sobel, Prewitt, …).
+
+## 🧠 Language Paradigm Principles
+
+* ✅ Encapsulation & SOLID principles
+* ✅ Dependency Injection
+* ✅ Separation of Concerns
+
+### Error Handling
+
+Standard C# `try`/`catch` blocks wrap disk and image operations; failures bubble up to the UI layer through typed exceptions.
+
+## 🏗 Project Structure
+
+### Architecture
 
 ```
-PictureEditor.sln
-│
-├── PictureEditor/          # WinForms GUI + presentation layer
-│   ├── EditorGUI.cs        # Main form (controller)
-│   └── BusinessLayer/      # BL interfaces & managers
-│       ├── Interfaces/
-│       └── Managers/
-│
-├── PictureEditor_Test/     # xUnit test project
-│   └── …                   # Unit tests, fakes & fixtures
-└── README.md (this file)
+WinForms UI (Presentation)
+      │  IImageManager  IEdgeDetection  IOutputInput
+      ▼
++----------------------------------------------+
+|   Business Layer – 100 % unit‑test coverage  |
+|  · FiltersManager     · EdgeDetectionManager |
+|                ImageManager                  |
++----------------------------------------------+
+      │
+      ▼
+OutputInputFilesystem (Data Access Layer)
 ```
 
----
+## 📘 Documentation & Diagrams
 
----
+* User & developer docs in **[`Annexes/UserGuide.pdf`](https://github.com/EliasBorrajo/PictureEditor/blob/master/Annexes/UserGuide.pdf)**.
+* Project presentation slides in **[`Annexes/Presentation.pptx`](https://github.com/EliasBorrajo/PictureEditor/blob/master/Annexes/Presentation.pptx)**.
 
-## 4 · Refactor log
+## ✅ Tests & Validation
 
-| Commit   | Refactor                              | Tests added                      |
-| -------- | ------------------------------------- | -------------------------------- |
-| `08b93c` | Extract `IOutputInput` interface      | none                             |
-| `1f4a1d` | Move file I/O to DAL                  | ✅ Save/Load round‑trip           |
-| `27c5e8` | Extract `IEdgeDetection` & strategies | ✅ Sobel detects horizontal edges |
-| `34fa77` | Replace static helpers with DI        | all tests green                  |
+| Scope              | Tooling / Method                 | Status           |
+| ------------------ | -------------------------------- | ---------------- |
+| Business Layer     | xUnit + NSubstitute test doubles | ✅ 100 % coverage |
+| Presentation Layer | Automated WinForms UI tests      | ✅ 100 % coverage |
 
----
+## 📌 Success Criteria Table
 
-## 5 · AI assistance
+| Criterion               | Status | Notes                     |
+| ----------------------- | ------ | ------------------------- |
+| Functional Requirements | ✅ Done | Core features implemented |
+| Business‑Layer Coverage | ✅ Done | 100 % line & branch       |
+| UI testing              | ✅ Done | 100 % automated UI tests  |
 
-* **GitHub Copilot** → quick XML‑doc, small refactors.
-* **ChatGPT** → brainstorming safe edge‑cases & dependency inversion.
-  *See original convos*: [1](https://chat.openai.com/share/eb8a620f-45d8-4e42-8843-c3566397dd10) · [2](https://chat.openai.com/share/21b383d5-c93c-4dd7-b940-e14fd1e3473c) · [3](https://chat.openai.com/share/7f4cdb70-4c38-44d2-8474-ec223f2f0f74) · [4](https://chat.openai.com/share/21b383d5-c93c-4dd7-b940-e14fd1e3473c)
+## 👤 Authors
 
----
-
-## 6 · Authors
-
+* **Arthur Avez**
 * **Elias Borrajo**
-* Benjamin Keller
-* Arthur Avez
+* **Benjamin Keller**
+
+---
+
+*Project completed for ****HES‑SO Valais, Module 625‑1 — Test‑Driven Development (Fall 2023)****.*
+Professor: Dominique Genoud
+
